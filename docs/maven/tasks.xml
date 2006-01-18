@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <title>Tasks</title>
+    <author email="chous@acm-sl.org">Jose San Leandro</author>
+  </properties>
+
+  <body>
+    <section name="Tasks">
+      <p>
+        Lists of "to-do"s and ideas for future versions.
+      </p>
+
+      <subsection name="0.1">
+        <p>
+          <ul>
+            <li>
+              Write the initial logic-less ANTLR grammar for the DOT language.
+            </li>
+          </ul>
+        </p>
+      </subsection>
+    </section>
+
+  </body>
+</document>

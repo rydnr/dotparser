@@ -1,0 +1,277 @@
+<?xml version="1.0"?>
+<!--
+ @license
+                             DotParser
+
+    Copyright (C) 2006  Jose San Leandro Armend&aacute;riz
+                             chous@acm-sl.org
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public
+    License as published by the Free Software Foundation; either
+    version 2 of the License, or any later version.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    General Public License for more details.
+
+    You should have received a copy of the GNU General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+
+    Thanks to ACM S.L. for distributing this library under the GPL license.
+    Contact info: jose.sanleandro@acm-sl.com
+    Postal Address: c/Playa de Lagoa, 1
+                    Urb. Valdecaba&ntilde;as
+                    Boadilla del monte
+                    28660 Madrid
+                    Spain
+
+ @header
+  
+   Filename: $RCSfile$
+
+   Author: Jose San Leandro Armendariz
+
+   Description: Maven project descriptor for QueryJ.
+-->
+<project>
+  <pomVersion>3</pomVersion>
+  <name>QueryJ</name>
+  <id>queryj</id>
+  <groupId>org.acmsl.dotparser</groupId>
+  <currentVersion>0.1-SNAPSHOT</currentVersion>
+  <organization>
+    <name>ACM S.L.</name>
+    <url>http://www.acm-sl.org/</url>
+    <logo>http://www.acm-sl.org/images/logo.png</logo>
+  </organization>
+  <inceptionYear>2006</inceptionYear>
+  <package>org.acmsl.dotparser</package>
+
+  <shortDescription>
+    Parser for dot (Graphviz) grammar.
+  </shortDescription>
+
+  <description>
+    Simple ANTLR-based grammar to build an object model with Graphviz graphs.
+  </description>
+
+  <url>http://maven.acm-sl.org/dotparser/</url>
+  <logo>http://www.acm-sl.org/images/dotparser.png</logo>
+  <issueTrackingUrl>http://bugzilla.acm-sl.org</issueTrackingUrl>
+  <siteAddress>bugzilla.acm-sl.org</siteAddress>
+  <siteDirectory>
+    /home/anoncvs/dotparser
+  </siteDirectory>
+  <distributionDirectory>
+    /home/anoncvs/builds/dotparser/
+  </distributionDirectory>
+
+  <repository>
+    <connection>
+      scm:cvs:pserver:anoncvs@cvs.acm-sl.org:/var/cvs:dotparser
+    </connection>
+    <url>
+      http://cvs.acm-sl.org/viewcvs/viewcvs.cgi/dotparser
+    </url>
+  </repository>
+
+  <versions>
+    <version>
+      <id>0.1-SNAPSHOT</id>
+      <name>0.1-SNAPSHOT</name>
+      <tag>HEAD</tag>
+    </version>
+  </versions>
+
+  <mailingLists>
+    <mailingList>
+      <name>DotParser User List</name>
+      <subscribe>
+        dotparser-users-subscribe@dev.acm-sl.org
+      </subscribe>
+      <unsubscribe>
+        dotparser-users-unsubscribe@dev.acm-sl.org
+      </unsubscribe>
+      <archive>
+        http://sourceforge.net/mailinglists/dotparser-users@dev.acm-sl.org/
+      </archive>
+    </mailingList>
+    <mailingList>
+      <name>DotParser Developer List</name>
+      <subscribe>
+        dotparser-cvs-subscribe@dev.acm-sl.org
+      </subscribe>
+      <unsubscribe>
+        dotparser-cvs-unsubscribe@dev.acm-sl.org
+      </unsubscribe>
+      <archive>
+        http://sourceforge.net/mailinglists/dotparser-cvs@dev.acm-sl.org
+      </archive>
+    </mailingList>
+  </mailingLists>
+
+  <developers>
+
+    <developer>
+      <name>Jose San Leandro</name>
+      <id>chous</id>
+      <email>chous@acm-sl.org</email>
+      <organization>ACM-SL</organization>
+    </developer>
+  </developers>
+
+  <dependencies>
+
+    <dependency>
+      <groupId>acmsl-commons</groupId>
+      <artifactId>acmsl-commons</artifactId>
+      <version>0.5.7b8</version>
+      <url>http://www.acm-sl.org/commons</url>
+      <properties>
+        <required.to.compile>true</required.to.compile>
+        <required.to.run>true</required.to.run>
+        <required.to.test>true</required.to.test>
+        <required.to.build>true</required.to.build>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <groupId>antmake</groupId>
+      <artifactId>antmake</artifactId>
+      <version>0.1.9b1</version>
+      <url>http://www.acm-sl.org/antmake</url>
+      <properties>
+        <required.to.compile>false</required.to.compile>
+        <required.to.run>false</required.to.run>
+        <required.to.test>false</required.to.test>
+        <required.to.build>true</required.to.build>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.0.3</version>
+      <url>http://jakarta.apache.org/commons/</url>
+      <properties>
+        <required.to.compile>true</required.to.compile>
+        <required.to.run>true</required.to.run>
+        <required.to.test>true</required.to.test>
+        <required.to.build>true</required.to.build>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <url>http://www.junit.org</url>
+      <properties>
+        <required.to.compile>false</required.to.compile>
+        <required.to.run>false</required.to.run>
+        <required.to.test>true</required.to.test>
+        <required.to.build>false</required.to.build>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-beanutils</groupId>
+      <artifactId>commons-beanutils</artifactId>
+      <version>1.7.0</version>
+      <url>http://jakarta.apache.org/commons/</url>
+      <properties>
+        <required.to.compile>false</required.to.compile>
+        <required.to.run>true</required.to.run>
+        <required.to.test>false</required.to.test>
+        <required.to.build>false</required.to.build>
+        <injected.by>commons-digester</injected.by>
+        <injected.by>acmsl-commons</injected.by>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <groupId>oro</groupId>
+      <artifactId>oro</artifactId>
+      <version>2.0.8</version>
+      <url>http://jakarta.apache.org/oro</url>
+      <properties>
+        <required.to.compile>false</required.to.compile>
+        <required.to.run>true</required.to.run>
+        <required.to.test>true</required.to.test>
+        <required.to.build>true</required.to.build>
+        <injected.by>acmsl-commons/commons</injected.by>
+      </properties>
+    </dependency>
+
+  <build>
+
+    <nagEmailAddress>
+      chous@acm-sl.org
+    </nagEmailAddress>
+
+    <sourceDirectory>../../java/main</sourceDirectory>
+
+    <unitTestSourceDirectory>../../java/test</unitTestSourceDirectory>
+    <integrationUnitTestSourceDirectory/>
+
+    <aspectSourceDirectory/>
+
+    <!-- Unit test cases -->
+    <unitTest>
+      <includes>
+        <include>**/*Test.java</include>
+      </includes>
+      <excludes>
+        <exclude>**/RepositoryTest.java</exclude>
+      </excludes>
+    </unitTest>
+              
+    <!-- J A R  R E S O U R C E S -->
+    <!-- Resources that are packaged up inside the JAR file -->
+    <resources>
+      <includes>
+        <include>*.xsd</include>
+        <include>log4j.properties</include>
+      </includes>
+    </resources>
+
+    <!-- Integration unit test cases -->
+    <integrationUnitTest/>
+
+    <jars/>
+
+  </build>
+
+  <reports>
+    <report>maven-changelog-plugin</report>
+    <report>maven-changes-plugin</report>
+    <!-- We're getting out-of-memory
+    <report>maven-checkstyle-plugin</report>
+    -->
+    <!--
+      PMD makes the site generation crash if no errors are
+      found. It's better to do it manually.
+    <report>maven-pmd-plugin</report>
+    -->
+    <report>maven-developer-activity-plugin</report>
+    <report>maven-file-activity-plugin</report>
+    <report>maven-javadoc-plugin</report>
+    <report>maven-jdepend-plugin</report>
+    <report>maven-junit-report-plugin</report>
+    <report>maven-jxr-plugin</report>
+    <report>maven-license-plugin</report>
+    <!-- We're getting out-of-memory
+    <report>maven-linkcheck-plugin</report>
+    -->
+    <report>maven-tasklist-plugin</report>
+    <!--
+      JellyDoc makes the site generation crash if no errors are
+      found. It's better to do it manually.
+    <report>maven-jellydoc-plugin</report>
+    -->
+  </reports>
+</project>

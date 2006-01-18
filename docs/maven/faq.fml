@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faqs title="Frequently Asked Questions">
+
+  <part id="general">
+    <title>General</title>
+   
+    <faq id="whats-dotparser">
+      <question>
+        Has actually somebody ever asked something about DotParser?
+      </question>
+      <answer>
+        Not yet :). This "faq" is filled with questions I've find useful or
+        helpful to understand what this project is about.
+      </answer>
+
+      <question>
+        What is DotParser?
+      </question>
+      <answer>
+        <p>
+          DotParser builds custom object models from the AST created by the
+          ANTLR grammar file. You can use such model to do whichever kind of
+          analysis or transformation you need on a Graphviz file.
+        </p>
+      </answer>
+    </faq>
+  </part>
+</faqs>

@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+
+<document>
+
+  <properties>
+    <title>Overview</title>
+    <author email="chous@acm-sl.org">Jose San Leandro</author>
+  </properties>
+
+  <body>
+
+    <section name="Overview">
+      <p>
+        <strong>DotParser</strong> is a parser of DOT documents. It's able to
+        process a Graphviz graph and create an object model containing the
+        graph structure, simplyfing graph transformations. It's based on ANTLR.
+      </p>
+    </section>
+
+    <section name="News">
+      
+      <table>
+        <tr>
+          <td>
+            $Date$
+          </td>
+          <td>
+            Project started.
+          </td>
+        </tr>
+      </table>
+      
+    </section>
+
+  </body>
+</document>

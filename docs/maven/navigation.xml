@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+
+<project name="DotParser">
+  <title>DotParser</title>
+  <organizationLogo href="http://www.acm-sl.org/images/logo.png"/>
+  <body>
+    <links>
+      <item
+        name="ACM SL"
+        href="http://www.acm-sl.org"/>
+    </links>
+    <menu name="Overview">
+      <item name="Introduction" href="index.html"/>
+      <item name="FAQ" href="faq.html"/>
+      <item name="Tasks" href="tasks.html"/>
+      <!--item name="downloads" href="dist/"/-->
+      <search/>
+    </menu>
+  </body>
+</project>
