@@ -20,6 +20,7 @@ options
 COMPASS_PT
     :  (  ("ne") => "ne"
         | ("nw") => "nw"
+        | ("node") => NODE_LITERAL
         | "n"
         | "e"
         | ("se") => "se"
@@ -70,7 +71,8 @@ protected EDGEOP
        )
     ;
 
-WS  :
+WS
+    :
        (   ' '
         |  '\t'
         |  '\r' '\n' { newline(); }
@@ -78,3 +80,16 @@ WS  :
        ) {$setType(Token.SKIP);} //ignore this token
     ;
 
+protected O_BRACKET : '{';
+protected C_BRACKET : '}';
+protected O_SQR_BRACKET : '[';
+protected C_SQR_BRACKET : ']';
+protected SEMI_COLON : ';';
+protected EQUAL : '=';
+protected COMMA : ',';
+protected COLON : ':';
+protected STRICT_LITERAL : "strict";
+protected GRAPH_LITERAL : "graph";
+protected NODE_LITERAL : "node";
+protected EDGE_LITERAL : "edge";
+protected DIGRAPH_LITERAL : "digraph";
