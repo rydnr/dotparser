@@ -794,113 +794,6 @@
       description="Defines all required paths.">
 
       <!--
-       ANTLR-only compilation classpath.
-      -->
-      <path id="antlr.compile.class.path">
-
-        <!--
-         ANTLR libraries needed for compilation and at runtime.
-        -->
-        <fileset dir="${antlr.lib.dir}">
-
-          <include name="*.jar"/>
-
-        </fileset>
-
-        <!--
-         ANTLR libraries needed only for compilation.
-        -->
-        <fileset dir="${antlr.build.lib.dir}">
-
-          <include name="*.jar"/>
-
-        </fileset>
-
-      </path>
-
-      <!--
-       ANTLR-only runtime classpath.
-      -->
-      <path id="antlr.runtime.class.path">
-
-        <!--
-         ANTLR libraries needed for compilation and at runtime.
-        -->
-        <fileset dir="${antlr.lib.dir}">
-
-          <include name="*.jar"/>
-
-        </fileset>
-
-        <!--
-         ANTLR libraries needed only at runtime.
-        -->
-        <fileset dir="${antlr.runtime.lib.dir}">
-
-          <include name="*.jar"/>
-
-        </fileset>
-
-      </path>
-
-      <!--
-       ANTLR-only unit test classpath.
-      -->
-      <path id="antlr.unit.test.class.path">
-
-        <!--
-         ANTLR compile classpath.
-        -->
-        <path refid="antlr.compile.class.path"/>
-
-        <!--
-         ANTLR runtime classpath.
-        -->
-        <path refid="antlr.runtime.class.path"/>
-
-        <!--
-         ANTLR libraries needed for compilation and at runtime.
-        -->
-        <fileset dir="${antlr.lib.dir}">
-
-          <include name="*.jar"/>
-
-        </fileset>
-
-        <!--
-         ANTLR libraries needed only for testing..
-        -->
-        <fileset dir="${antlr.unit.test.lib.dir}">
-
-          <include name="*.jar"/>
-
-        </fileset>
-
-      </path>
-
-      <!--
-       ANTLR-only classpath.
-      -->
-      <path id="antlr.class.path">
-
-        <!--
-         ANTLR compile classpath.
-        -->
-        <path refid="antlr.compile.class.path"/>
-
-        <!--
-         ANTLR runtime classpath.
-        -->
-        <path refid="antlr.runtime.class.path"/>
-
-        <!--
-         ANTLR unit test classpath.
-        -->
-        <path refid="antlr.unit.test.class.path"/>
-
-      </path>
-
-      <!--
        Ant add-ins classpath.
       -->
       <path id="java.development.class.path">
@@ -953,11 +846,6 @@
 
         </fileset>
 
-        <!--
-         ANTLR-related libraries.
-        -->
-        <path refid="antlr.compile.class.path"/>
-
       </path>
 
       <!--
@@ -982,11 +870,6 @@
           <include name="*.jar"/>
 
         </fileset>
-
-        <!--
-         ANTLR-related libraries.
-        -->
-        <path refid="antlr.runtime.class.path"/>
 
       </path>
 
@@ -1091,11 +974,6 @@
          Class path for testing without aspects.
         -->
         <path refid="java.unit.test.class.path"/>
-
-        <!--
-         ANTLR test libraries.
-        -->
-        <path refid="antlr.unit.test.class.path"/>
 
       </path>
 
@@ -1279,9 +1157,9 @@
          Checks if antlr.jar is available.
         -->
         <available
-          classname="antlr.ANTLRParser"
+          classname="antlr.Tool"
           property="antlr.jar.available"
-          classpathref="antlr.class.path"/>
+          classpathref="java.development.class.path"/>
 
         <!--
          Checks if junit.jar is available.
@@ -1404,7 +1282,7 @@
         -->
         <property
             name="antlr-classpath"
-            refid="antlr.class.path"/>
+            refid="java.development.class.path"/>
 
         <!--
          Indicates the error message and exits.
@@ -1438,7 +1316,7 @@
         -->
         <property
             name="antlr-runtime-classpath"
-            refid="antlr.runtime.class.path"/>
+            refid="runtime.class.path"/>
 
         <!--
          Indicates the error message and exits.
@@ -1926,7 +1804,7 @@
       <taskdef
         name="antlr"
         classname="org.apache.tools.ant.taskdefs.optional.ANTLR"
-        classpathref="antlr.class.path"/>
+        classpathref="java.development.class.path"/>
 
     </target>
 
@@ -3307,12 +3185,12 @@ project.base.suite=
 
         <property
             name="antlr-class-path"
-            refid="antlr.class.path"/>
+            refid="java.development.class.path"/>
 
         <echo message="${antlr-class-path}"/>
 
         <mkdir
-        dir="${antlr.java.src.dir}/${antlr.base.package.folder}"/>
+          dir="${antlr.java.src.dir}/${antlr.base.package.folder}"/>
 
         <!--
          Actual antlr execution on given grammar.
@@ -3346,11 +3224,11 @@ project.base.suite=
         -->
         <javac destdir="${classes.dir}" debug="on">
 
-            <src refid="antlr.java.source.path"/>
+            <src refid="java.source.path"/>
 
-            <classpath refid="antlr.compile.class.path"/>
+            <classpath refid="java.compile.class.path"/>
 
-            <classpath refid="antlr.unit.test.class.path"/>
+            <classpath refid="unit.test.class.path"/>
 
         </javac>
 
