@@ -622,11 +622,6 @@
       -->
       <property name="shellscripts.dir" value="${src.dir}/shellscripts"/>
 
-      <!--
-         Templates configuration files are placed in this folder.
-      -->
-      <property name="templates.dir" value="${src.dir}/templates"/>
-
 <!--         END OF FOLDER STRUCTURE SECTION                                -->
 
 <!--         BEGIN MISC PROPERTIES DEFINITION SECTION                       -->
@@ -1025,6 +1020,11 @@
         -->
         <pathelement location="${jdk.X.Y.src.dir}"/>
 
+        <!--
+         ANTLR sources.
+        -->
+        <path refid="antlr.java.source.path"/>
+
       </path>
 
       <!--
@@ -1041,6 +1041,11 @@
          Javadoc sources.
         -->
         <pathelement location="${javadoc.src.dir}"/>
+
+        <!--
+         Javadoc sources for packages generated from ANTLR grammars.
+        -->
+        <pathelement location="${antlr.javadoc.src.dir}"/>
 
       </path>
 
@@ -2207,14 +2212,6 @@
              DTD
             -->
             <fileset dir="${xml.dir}" includes="**/*.dtd"/>
-
-            <!--
-             Templates
-            -->
-            <fileset dir="${templates.dir}">
-              <include name="**/*"/>
-              <exclude name="**/CVS"/>
-            </fileset>
 
         </copy>
 
