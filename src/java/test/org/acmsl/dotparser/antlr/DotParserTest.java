@@ -76,8 +76,8 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * Performs some unit tests on DotParser class.
- * @testedclass org.acmsl.dotparser.antlr.DotParserParser
- * @see org.acmsl.dotparser.antlr.DotParserParser
+ * @testedclass org.acmsl.dotparser.antlr.DotParser
+ * @see org.acmsl.dotparser.antlr.DotParser
  * @author <a href="mailto:chous@acm-sl.org"
            >Jose San Leandro Armendaáriz</a>
  * @version $Revision$
@@ -95,12 +95,9 @@ public class DotParserTest
         + "    layers=\"process:errors\";\n"
         + "    rankdir=TD;\n"
         + "    concentrate=true;\n"
-        + "        \n"
         + "    node [shape=box, style=\"rounded,filled\", layer=all, fillcolor=\"darkslategray3\"];\n"
         + "    edge [layer=all];\n"
-        + "    \n"
-        + "    start [label=\"\", shape=circle, fillcolor=black, fixedsize=true, width=0.2];\n"
-        + "    \n"
+        + "    start [label=\"\", shape=circle, fillcolor=black, fixedsize=true, width=0.2];\n\n"
         + "    readXml [label=\"Read XML\"];\n"
         + "    retrieveNextCommType [label=\"Retrieve next\nCommunication Type\"];\n"
         + "    checkCommType[label=\"Check whether\nCommunication Type\nexists\", fillcolor=\"orange\", shape=\"diamond\"];\n"
@@ -109,11 +106,8 @@ public class DotParserTest
         + "    createTemplate[label=\"Create Template\"];\n"
         + "    // commitTransaction[label=\"Commit transaction\", fillcolor=\"#D2D263\"];\n"
         + "    // rollbackTransaction[label=\"Rollback transaction\", fillcolor=\"#D2D263\"];\n"
-        + "\n"
         + "    error [label=\"Error\", layer=\"error\", fillcolor=\"red\"];\n"
-        + "\n"
         + "    end [label=\"\", shape=doublecircle, fillcolor=\"black\", fixedsize=true, width=0.2];\n"
-        + "\n"
         + "    start -> readXml [label=\"0\"];\n"
         + "    readXml -> retrieveNextCommType [label=\"0\"];\n"
         + "    readXml -> error [label=\"-1\", layer=\"error\", color=\"gray85\", fontcolor=\"gray85\"];\n"
@@ -145,7 +139,7 @@ public class DotParserTest
      * Constructs a test case with the given name.
      * @param name the test case name.
      */
-    public DotParserTest(String name)
+    public DotParserTest(final String name)
     {
         super(name);
     }

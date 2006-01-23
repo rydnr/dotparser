@@ -63,11 +63,10 @@ stmt_list
     ;
 
 stmt
-    :  (  (ID) =>
-            (  (EQUAL) => (ID EQUAL ID)
+    :  (  ID
+            (  EQUAL ID
              | (  (edgeRHS) => edge_stmt
-                | node_stmt
-                ))
+                | node_stmt))
         | attr_stmt
         | subgraph
        )
