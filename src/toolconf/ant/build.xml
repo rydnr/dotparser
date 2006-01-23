@@ -1218,22 +1218,6 @@
           classpathref="java.development.class.path"/>
 
         <!--
-         Checks if junitdoclet.jar is available.
-        -->
-        <available
-          classname="com.objectfab.tools.junitdoclet.JUnitDoclet"
-          property="junitdoclet.jar.available"
-          classpathref="java.development.class.path"/>
-
-        <!--
-         Checks if junitdoclet-acmsl.jar is available.
-        -->
-        <available
-          classname="org.acmsl.junitdoclet.AcmslNamingStrategy"
-          property="junitdoclet-acmsl.jar.available"
-          classpathref="java.development.class.path"/>
-
-        <!--
          Checks if jalopy-ant.jar is available.
         -->
         <available
@@ -1491,70 +1475,6 @@
             message="Expecting aspectjrt.jar at ${aspectjrt-classpath}.
                      The process stops because AspectJ runtime library is
                      mandatory."/>
-
-    </target>
-
-    <!--
-     Checks if the <i>junitdoclet.jar</i> is present.
-     @depends init to initialize all required properties.
-     @unless junitdoclet.jar.available exists, the process will fail.
-     @param JUnitDoclet.jar the location of the <i>JUnitDoclet</i> jar.
-     @calls fail to stop the process if <i>JUnitDoclet.jar</i> is not present.
-     @return the execution ends if the <i>JUnitDoclet.jar</i> is not available.
-    -->
-    <target
-        name="junitdoclet.jar.available"
-        depends="init" 
-        unless="junitdoclet.jar.available"
-        description="Checks if the junitdoclet.jar is present.">
-
-        <!--
-         Contains all JUnitDoclet classpath.
-        -->
-        <property
-            name="junitdoclet-classpath"
-            refid="java.development.class.path"/>
-
-        <!--
-         Indicates the error message and exits.
-        -->
-        <fail
-            message="Expecting junitdoclet.jar and junitdoclet-acmsl.jar
-                     at ${junitdoclet-classpath}.
-                     The process stops because JUnitDoclet library is
-                     mandatory."/>
-
-    </target>
-
-    <!--
-     Checks if the <i>junitdoclet-acmsl.jar</i> is present.
-     @depends init to initialize all required properties.
-     @unless junitdoclet-acmsl.jar.available exists, the process will fail.
-     @param junitdoclet-acmsl.jar the location of the <i>ACMSL</i>
-            JUnitDoclet customizations.
-     @calls fail to stop the process if <i>junitdoclet-acmsl.jar</i> is not present.
-     @return the execution ends if the <i>junitdoclet-acmsl.jar</i> is not available.
-    -->
-    <target
-        name="junitdoclet-acmsl.jar.available"
-        depends="init" 
-        unless="junitdoclet-acmsl.jar.available"
-        description="Checks if the junitdoclet-acmsl.jar is present.">
-
-        <!--
-         Contains all JUnitDoclet-ACMSL classpath.
-        -->
-        <property
-            name="junitdoclet-acmsl-classpath"
-            refid="java.development.class.path"/>
-
-        <!--
-         Indicates the error message and exits.
-        -->
-        <fail
-            message="Expecting junitdoclet-acmsl.jar at ${junitdoclet-acmsl-classpath}.
-                     The process stops because ACM-SL's JUnitDoclet customizations
-                     are mandatory."/>
 
     </target>
 
@@ -1840,50 +1760,6 @@
     </target>
 
 <!--         END EXTERNAL TASKS DEFINITION SECTION                          -->
-
-<!--         BEGIN CODE GENERATION SECTION                                  -->
-
-    <!--
-     Generates the unit test cases for the source files.
-     @depends init to take some basic initial steps in the build
-     process.
-     @depends junitdoclet.jar.available to ensure <i>junitdoclet.jar</i> exists.
-     @depends junitdoclet-acmsl.jar.available to ensure
-     <i>junitdoclet-acmsl.jar</i> exists.
-     @param organization.type the type of organization.
-     @param java.compile.class.path the classpath.
-     @param javadoc.src.dir the folder of the Javadoc source files.
-     @param javadoc.src.dir the folder of the Javadoc source files.
-     @param java.source.and.javadoc.path the complete Java + Javadoc source path.
-     @return the generated and managed unit tests.
-    -->
-    <target
-      name="junitdoclet"
-      depends="init, junitdoclet.jar.available, junitdoclet-acmsl.jar.available">
-
-      <mkdir dir="${javadoc.src.dir}"/>
-
-      <javadoc
-        packagenames="${organization.type}.*"
-        defaultexcludes="yes"
-        classpathref="unit.test.class.path"
-        doclet="com.objectfab.tools.junitdoclet.JUnitDoclet"
-        docletpathref="java.development.class.path"
-        additionalparam="-d ../../../${java.src.dir} -buildall -naming org.acmsl.junitdoclet.AcmslNamingStrategy -testintest">
-
-        <sourcepath>
-
-          <!-- ORDER MATTERS -->
-          <pathelement location="${javadoc.src.dir}"/>
-
-          <path refid="java.source.and.javadoc.path"/>
-
-        </sourcepath>
-
-    </javadoc>
-  </target>
-
-<!--         END CODE GENERATION SECTION                                    -->
 
 <!--         BEGIN CODE FORMATTING SECTION                                  -->
 
@@ -2546,7 +2422,6 @@
 
     <!--
      Executes all defined unit tests.
-     @depends junitdoclet to manage the unit tests.
      @depends rebuild to build the project.
      @depends update.unittest.number to update the test count.
      @param project.base.suite the JUnit suite that contains all tests.
@@ -2558,7 +2433,7 @@
     -->
     <target
         name="unit.tests"
-        depends="junitdoclet,compile"
+        depends="compile"
         description="Executes all defined unit tests.">
 
         <!--
@@ -2639,7 +2514,6 @@
 
     <!--
      Debugs defined unit tests.
-     @depends junitdoclet to manage the unit tests.
      @param project.base.suite the JUnit suite that contains all tests.
      @param classpath the classpath.
      @param project.build the project compiled classes.
@@ -2648,8 +2522,8 @@
     -->
     <target
         name="debug.unit.tests"
-        depends="junitdoclet"
-        description="DEbugs defined unit tests.">
+        depends="compile"
+        description="Debugs defined unit tests.">
 
         <property name="unit-test-path" refid="unit.test.class.path"/>
 

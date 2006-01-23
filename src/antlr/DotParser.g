@@ -90,7 +90,7 @@ edge_stmt
     ;
 
 edgeRHS
-    :  EDGEOP (node_id | subgraph)? (edgeRHS)?
+    :  EDGEOP_LITERAL (node_id | subgraph)? (edgeRHS)?
     ;
 
 node_stmt

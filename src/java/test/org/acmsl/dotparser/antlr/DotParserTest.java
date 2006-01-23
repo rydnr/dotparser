@@ -170,6 +170,10 @@ public class DotParserTest
            DotParser t_DotParser = new DotParser(t_TokenBuffer);
 
            assertNotNull(t_DotParser);
+
+           t_DotParser.graph();
+
+           assertNotNull(t_DotParser.getAST());
         }
         catch  (final Throwable throwable)
         {

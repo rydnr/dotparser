@@ -59,7 +59,55 @@ options
   List links = new ArrayList();
 }
 
-COMPASS_PT
+LITERALS
+    :  (  ("graph") => GRAPH_LITERAL {$setType(GRAPH_LITERAL);}
+        | ("digraph") => DIGRAPH_LITERAL {$setType(DIGRAPH_LITERAL);}
+        | ("strict") => STRICT_LITERAL {$setType(STRICT_LITERAL);}
+        | ("node") => NODE_LITERAL {$setType(NODE_LITERAL);}
+        | ("edge") => EDGE_LITERAL {$setType(EDGE_LITERAL);}
+        | ("--") => EDGEOP_LITERAL {$setType(EDGEOP_LITERAL);}
+        | ("->") => EDGEOP_LITERAL {$setType(EDGEOP_LITERAL);}
+        | ("{") => O_BRACKET {$setType(O_BRACKET);}
+        | ("}") => C_BRACKET {$setType(C_BRACKET);}
+        | ("[") => O_SQR_BRACKET {$setType(O_SQR_BRACKET);}
+        | ("]") => C_SQR_BRACKET {$setType(C_SQR_BRACKET);}
+        | (";") => SEMI_COLON {$setType(SEMI_COLON);}
+        | ("=") => EQUAL {$setType(EQUAL);}
+        | (",") => COMMA {$setType(COMMA);}
+        | (":") => COLON {$setType(COLON);}
+        | ID {$setType(ID);})
+    ;
+
+protected GRAPH_LITERAL : "graph";
+protected DIGRAPH_LITERAL : "digraph";
+protected STRICT_LITERAL : "strict";
+protected NODE_LITERAL : "node";
+protected EDGE_LITERAL : "edge";
+
+protected O_BRACKET : '{';
+protected C_BRACKET : '}';
+protected O_SQR_BRACKET : '[';
+protected C_SQR_BRACKET : ']';
+protected SEMI_COLON : ';';
+protected EQUAL : '=';
+protected COMMA : ',';
+protected COLON : ':';
+
+protected EDGEOP_LITERAL
+    :  (  ("->") => "->"
+        | ("--") => "--"
+       )
+    ;
+
+
+protected ID
+    :  (  VALIDSTR
+        | NUMBER
+        | QUOTEDSTR
+        | HTMLSTR
+       );
+
+protected COMPASS_PT
     :  (  ("ne") => "ne"
         | ("nw") => "nw"
         | ("node") => NODE_LITERAL
@@ -69,13 +117,6 @@ COMPASS_PT
         | ("sw") => "sw"
         | "s"
         | "w"
-       );
-
-protected ID
-    :  (  VALIDSTR
-        | NUMBER
-        | QUOTEDSTR
-        | HTMLSTR
        );
 
 protected ALPHACHAR
@@ -107,12 +148,6 @@ protected HTMLSTR
     :  '<' (~'>')* '>'
     ;
 
-protected EDGEOP
-    :  (  ("->") => "->"
-        | ("--") => "--"
-       )
-    ;
-
 WS
     :
        (   ' '
@@ -122,16 +157,41 @@ WS
        ) {$setType(Token.SKIP);} //ignore this token
     ;
 
-protected O_BRACKET : '{';
-protected C_BRACKET : '}';
-protected O_SQR_BRACKET : '[';
-protected C_SQR_BRACKET : ']';
-protected SEMI_COLON : ';';
-protected EQUAL : '=';
-protected COMMA : ',';
-protected COLON : ':';
-protected STRICT_LITERAL : "strict";
-protected GRAPH_LITERAL : "graph";
-protected NODE_LITERAL : "node";
-protected EDGE_LITERAL : "edge";
-protected DIGRAPH_LITERAL : "digraph";
+// Single-line comments
+COMMENT
+    :  (  ("/*") => ML_COMMENT
+        | ("//") => SL_COMMENT)
+    ;
+
+// Taken from ANTLR's Java grammar.
+// Single-line comments
+protected SL_COMMENT
+    :  "//"
+       (~('\n'|'\r'))* ('\n'|'\r'('\n')?)
+       {$setType(Token.SKIP); newline();}
+    ;
+
+// multiple-line comments
+protected ML_COMMENT
+    :  "/*"
+       (   /*
+              '\r' '\n' can be matched in one alternative or by matching
+              '\r' in one iteration and '\n' in another.  I am trying to
+              handle any flavor of newline that comes in, but the language
+              that allows both "\r\n" and "\r" and "\n" to all be valid
+              newline is ambiguous.  Consequently, the resulting grammar
+              must be ambiguous.  I'm shutting this warning off.
+            */
+            options {
+                generateAmbigWarnings=false;
+            }
+	:
+               {LA(2)!='/'}? '*'
+             | '\r' '\n' {newline();}
+             | '\r' {newline();}
+             | '\n' {newline();}
+             | ~('*'|'\n'|'\r')
+       )*
+       "*/"
+       {$setType(Token.SKIP);}
+    ;

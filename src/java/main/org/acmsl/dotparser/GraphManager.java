@@ -49,9 +49,10 @@ import org.acmsl.dotparser.antlr.DotParser;
  * Importing ANTLR classes.
  */
 import antlr.collections.AST;
-import antlr.Parser;
+import antlr.RecognitionException;
 import antlr.TokenBuffer;
 import antlr.TokenStream;
+import antlr.TokenStreamException;
 
 /*
  * Importing some JDK classes.
@@ -63,6 +64,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+
+/*
+ * Importing Commons-Logging classes.
+ */
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Facade to parse and manage contents of
@@ -232,9 +238,22 @@ public class GraphManager
         List t_aNodes = new ArrayList();
         List a_aEdges = new ArrayList();
 
-        AST t_AST = buildAST(inputStream);
+        try
+        {
+            AST t_AST = buildAST(inputStream);
 
-        System.out.println(t_AST.toStringTree());
+            System.out.println(t_AST.toStringTree());
+        }
+        catch  (final RecognitionException recognitionException)
+        {
+            LogFactory.getLog(getClass()).fatal(
+                "Invalid input", recognitionException);
+        }
+        catch  (final TokenStreamException tokenStreamException)
+        {
+            LogFactory.getLog(getClass()).fatal(
+                "Invalid input", tokenStreamException);
+        }
 
         return result;
     }
@@ -243,9 +262,15 @@ public class GraphManager
      * Builds the AST from given input stream.
      * @param input the input.
      * @return the AST.
+     * @throws RecognitionException if the input is not valid according
+     * to the lexical rules.
+     * @throws TokenStreamException if the stream cannot be splitted in
+     * tokens for any reason.
      * @precondition input != null
      */
     protected AST buildAST(final InputStream input)
+        throws  RecognitionException,
+                TokenStreamException
     {
         AST result = null;
 
@@ -253,7 +278,9 @@ public class GraphManager
 
         TokenBuffer t_TokenBuffer = new TokenBuffer(t_DotLexer);
 
-        Parser t_DotParser = new DotParser(t_TokenBuffer);
+        DotParser t_DotParser = new DotParser(t_TokenBuffer);
+
+        t_DotParser.graph();
 
         result = t_DotParser.getAST();
 
