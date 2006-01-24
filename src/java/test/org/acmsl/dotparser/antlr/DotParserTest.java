@@ -211,6 +211,16 @@ public class DotParserTest
 
            assertNotNull(t_DotParser.getAST());
 
+           antlr.debug.misc.ASTFrame frame =
+               new antlr.debug.misc.ASTFrame(
+                   "AST JTree Example", t_DotParser.getAST());
+           frame.setVisible(true);
+
+           while  (true)
+           {
+           } // end of while  ()
+
+           /*
            t_DotLexer =
                new DotLexer(
                    new StringBufferInputStream(TEST_INPUT_2));
@@ -228,6 +238,7 @@ public class DotParserTest
            t_DotParser.graph();
 
            assertNotNull(t_DotParser.getAST());
+           */
         }
         catch  (final Throwable throwable)
         {

@@ -55,18 +55,18 @@ options
 }
 graph
     :  (STRICT_LITERAL)?
-       (GRAPH_LITERAL | DIGRAPH_LITERAL) (ID)?
-       O_BRACKET stmt_list C_BRACKET
+       (GRAPH_LITERAL^ | DIGRAPH_LITERAL^) (ID)?
+       O_BRACKET! stmt_list C_BRACKET!
     ;
 
 protected stmt_list
-    :  ( stmt SEMI_COLON stmt_list )?
+    :  ( stmt SEMI_COLON! stmt_list)?
     ;
 
 protected stmt
     {String currentId = null;}
-    :  (  i:ID {currentId = i.getText();}
-          (  EQUAL ID
+    :  (  i:ID^ {currentId = i.getText();}
+          (  EQUAL! ID
            | node_or_edge_stmt[currentId])
         | attr_stmt
         | subgraph
@@ -89,15 +89,15 @@ protected node_stmt[String id, String port]
     ;
 
 protected attr_stmt
-    :  (GRAPH_LITERAL | NODE_LITERAL | EDGE_LITERAL) attr_list
+    :  (GRAPH_LITERAL^ | NODE_LITERAL^ | EDGE_LITERAL^) attr_list
     ;
 
 protected attr_list
-    :  O_SQR_BRACKET (a_list)? C_SQR_BRACKET (attr_list)?
+    :  O_SQR_BRACKET! (a_list)? C_SQR_BRACKET! (attr_list)?
     ;
 
 protected a_list
-    :  ID (EQUAL ID)? (COMMA)? (a_list)?
+    :  ID^ (EQUAL! ID)? (COMMA!)? (a_list)?
     ;
 
 protected edgeRHS
@@ -106,13 +106,13 @@ protected edgeRHS
 
 protected node_id
     { String p = null; }
-    :  ID (p=port)?
+    :  ID^ (p=port)?
     ;
 
 protected port returns [String result = null]
     {String compass = null;}
-    :  COLON 
-        (  i:ID (COLON c1:COMPASS_PT {compass = c1.getText();})?
+    :  COLON!
+        (  i:ID^ (COLON! c1:COMPASS_PT {compass = c1.getText();})?
            {
                result = i.getText();
                if  (compass != null)
@@ -120,12 +120,12 @@ protected port returns [String result = null]
                    result += ":" + compass;
                }
            }
-         | c2:COMPASS_PT { result = c2.getText(); }
+         | c2:COMPASS_PT^ { result = c2.getText(); }
         )
     ;
 
 protected subgraph
-    :  (SUBGRAPH_LITERAL
+    :  (SUBGRAPH_LITERAL^
            (  (ID) =>
                 (  (O_BRACKET) => subgraph_ext
                 | subgraph_simple)
@@ -133,9 +133,9 @@ protected subgraph
     ;
 
 protected subgraph_ext
-    :  (SUBGRAPH_LITERAL (ID)? )? O_BRACKET stmt_list C_BRACKET
+    :  (SUBGRAPH_LITERAL^ (ID)? )? O_BRACKET! stmt_list C_BRACKET!
     ;
 
 protected subgraph_simple
-    :  SUBGRAPH_LITERAL ID
+    :  SUBGRAPH_LITERAL ID^
     ;
