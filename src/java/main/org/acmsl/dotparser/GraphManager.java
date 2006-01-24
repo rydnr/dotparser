@@ -246,6 +246,13 @@ public class GraphManager
     {
         String result = null;
 
+        AST name = ast.getFirstChild();
+
+        if  (name != null)
+        {
+            result = name.getText();
+        }
+
         return result;
     }
 
@@ -257,8 +264,6 @@ public class GraphManager
      */
     protected boolean retrieveDirected(final AST ast)
     {
-        boolean result = true;
-
-        return result;
+        return "digraph".equalsIgnoreCase(ast.getText());
     }
 }

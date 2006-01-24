@@ -98,7 +98,7 @@ public class GraphManagerTest
        try 
        {
            InputStream t_isDotInput =
-               new StringBufferInputStream(DotParserTest.TEST_INPUT_2);
+               new StringBufferInputStream(DotParserTest.TEST_INPUT_1);
 
            GraphManager t_GraphManager = new GraphManager(t_isDotInput);
 
@@ -107,6 +107,9 @@ public class GraphManagerTest
            Graph t_Graph = t_GraphManager.getGraph();
 
            assertNotNull(t_Graph);
+
+           assertEquals("nlpMessagingGenerator", t_Graph.getName());
+           assertTrue(t_Graph.getDirected() == false);
         }
         catch  (final Throwable throwable)
         {
