@@ -42,7 +42,7 @@
   <name>QueryJ</name>
   <id>queryj</id>
   <groupId>org.acmsl.dotparser</groupId>
-  <currentVersion>0.1</currentVersion>
+  <currentVersion>0.2-SNAPSHOT</currentVersion>
   <organization>
     <name>ACM S.L.</name>
     <url>http://www.acm-sl.org/</url>
