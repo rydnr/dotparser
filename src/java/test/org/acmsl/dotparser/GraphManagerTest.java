@@ -63,6 +63,7 @@ import junit.framework.TestCase;
  */
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
+import java.util.List;
 
 /*
  * Importing some Commons Logging classes.
@@ -110,9 +111,165 @@ public class GraphManagerTest
 
            assertEquals("nlpMessagingGenerator", t_Graph.getName());
            assertTrue(t_Graph.getDirected() == false);
+
+           List t_lNodes = t_Graph.getNodes();
+
+           assertNotNull(t_lNodes);
+
+           Node[] t_aNodes = (Node[]) t_lNodes.toArray(new Node[0]);
+
+           assertTrue(t_aNodes.length == 8);
+           int t_iIndex = 0;
+
+           assertNotNull(t_aNodes[t_iIndex]);
+           assertEquals(
+               "start", t_aNodes[t_iIndex++].getName());
+           assertNotNull(t_aNodes[t_iIndex]);
+           assertEquals(
+               "readXml", t_aNodes[t_iIndex++].getName());
+           assertNotNull(t_aNodes[t_iIndex]);
+           assertEquals(
+               "retrieveNextCommType", t_aNodes[t_iIndex++].getName());
+           assertNotNull(t_aNodes[t_iIndex]);
+           assertEquals(
+               "checkCommType", t_aNodes[t_iIndex++].getName());
+           assertNotNull(t_aNodes[t_iIndex]);
+           assertEquals(
+               "createCommType", t_aNodes[t_iIndex++].getName());
+           assertNotNull(t_aNodes[t_iIndex]);
+           assertEquals(
+               "createTemplate", t_aNodes[t_iIndex++].getName());
+           assertNotNull(t_aNodes[t_iIndex]);
+           assertEquals(
+               "error", t_aNodes[t_iIndex++].getName());
+           assertNotNull(t_aNodes[t_iIndex]);
+           assertEquals(
+               "end", t_aNodes[t_iIndex++].getName());
+           
+           List t_lEdges = t_Graph.getEdges();
+           Edge[] t_aEdges = (Edge[]) t_lEdges.toArray(new Edge[0]);
+
+           assertTrue(t_aEdges.length == 14);
+           t_iIndex = 0;
+           Node t_LeftNode = null;
+           Node t_RightNode = null;
+
+           assertNotNull(t_aEdges[t_iIndex]);
+           t_LeftNode = t_aEdges[t_iIndex].getLeftNode();
+           assertNotNull(t_LeftNode);
+           assertEquals(t_LeftNode, t_aNodes[0]);
+           t_RightNode = t_aEdges[t_iIndex++].getRightNode();
+           assertNotNull(t_RightNode);
+           assertEquals(t_RightNode, t_aNodes[1]);
+
+           assertNotNull(t_aEdges[t_iIndex]);
+           t_LeftNode = t_aEdges[t_iIndex].getLeftNode();
+           assertNotNull(t_LeftNode);
+           assertEquals(t_LeftNode, t_aNodes[1]);
+           t_RightNode = t_aEdges[t_iIndex++].getRightNode();
+           assertNotNull(t_RightNode);
+           assertEquals(t_RightNode, t_aNodes[2]);
+
+           assertNotNull(t_aEdges[t_iIndex]);
+           t_LeftNode = t_aEdges[t_iIndex].getLeftNode();
+           assertNotNull(t_LeftNode);
+           assertEquals(t_LeftNode, t_aNodes[1]);
+           t_RightNode = t_aEdges[t_iIndex++].getRightNode();
+           assertNotNull(t_RightNode);
+           assertEquals(t_RightNode, t_aNodes[6]);
+
+           assertNotNull(t_aEdges[t_iIndex]);
+           t_LeftNode = t_aEdges[t_iIndex].getLeftNode();
+           assertNotNull(t_LeftNode);
+           assertEquals(t_LeftNode, t_aNodes[2]);
+           t_RightNode = t_aEdges[t_iIndex++].getRightNode();
+           assertNotNull(t_RightNode);
+           assertEquals(t_RightNode, t_aNodes[3]);
+
+           assertNotNull(t_aEdges[t_iIndex]);
+           t_LeftNode = t_aEdges[t_iIndex].getLeftNode();
+           assertNotNull(t_LeftNode);
+           assertEquals(t_LeftNode, t_aNodes[2]);
+           t_RightNode = t_aEdges[t_iIndex++].getRightNode();
+           assertNotNull(t_RightNode);
+           assertEquals(t_RightNode, t_aNodes[7]);
+
+           assertNotNull(t_aEdges[t_iIndex]);
+           t_LeftNode = t_aEdges[t_iIndex].getLeftNode();
+           assertNotNull(t_LeftNode);
+           assertEquals(t_LeftNode, t_aNodes[2]);
+           t_RightNode = t_aEdges[t_iIndex++].getRightNode();
+           assertNotNull(t_RightNode);
+           assertEquals(t_RightNode, t_aNodes[6]);
+
+           assertNotNull(t_aEdges[t_iIndex]);
+           t_LeftNode = t_aEdges[t_iIndex].getLeftNode();
+           assertNotNull(t_LeftNode);
+           assertEquals(t_LeftNode, t_aNodes[3]);
+           t_RightNode = t_aEdges[t_iIndex++].getRightNode();
+           assertNotNull(t_RightNode);
+           assertEquals(t_RightNode, t_aNodes[2]);
+
+           assertNotNull(t_aEdges[t_iIndex]);
+           t_LeftNode = t_aEdges[t_iIndex].getLeftNode();
+           assertNotNull(t_LeftNode);
+           assertEquals(t_LeftNode, t_aNodes[3]);
+           t_RightNode = t_aEdges[t_iIndex++].getRightNode();
+           assertNotNull(t_RightNode);
+           assertEquals(t_RightNode, t_aNodes[4]);
+
+           assertNotNull(t_aEdges[t_iIndex]);
+           t_LeftNode = t_aEdges[t_iIndex].getLeftNode();
+           assertNotNull(t_LeftNode);
+           assertEquals(t_LeftNode, t_aNodes[3]);
+           t_RightNode = t_aEdges[t_iIndex++].getRightNode();
+           assertNotNull(t_RightNode);
+           assertEquals(t_RightNode, t_aNodes[6]);
+
+           assertNotNull(t_aEdges[t_iIndex]);
+           t_LeftNode = t_aEdges[t_iIndex].getLeftNode();
+           assertNotNull(t_LeftNode);
+           assertEquals(t_LeftNode, t_aNodes[4]);
+           t_RightNode = t_aEdges[t_iIndex++].getRightNode();
+           assertNotNull(t_RightNode);
+           assertEquals(t_RightNode, t_aNodes[5]);
+
+           assertNotNull(t_aEdges[t_iIndex]);
+           t_LeftNode = t_aEdges[t_iIndex].getLeftNode();
+           assertNotNull(t_LeftNode);
+           assertEquals(t_LeftNode, t_aNodes[4]);
+           t_RightNode = t_aEdges[t_iIndex++].getRightNode();
+           assertNotNull(t_RightNode);
+           assertEquals(t_RightNode, t_aNodes[6]);
+
+           assertNotNull(t_aEdges[t_iIndex]);
+           t_LeftNode = t_aEdges[t_iIndex].getLeftNode();
+           assertNotNull(t_LeftNode);
+           assertEquals(t_LeftNode, t_aNodes[5]);
+           t_RightNode = t_aEdges[t_iIndex++].getRightNode();
+           assertNotNull(t_RightNode);
+           assertEquals(t_RightNode, t_aNodes[2]);
+
+           assertNotNull(t_aEdges[t_iIndex]);
+           t_LeftNode = t_aEdges[t_iIndex].getLeftNode();
+           assertNotNull(t_LeftNode);
+           assertEquals(t_LeftNode, t_aNodes[5]);
+           t_RightNode = t_aEdges[t_iIndex++].getRightNode();
+           assertNotNull(t_RightNode);
+           assertEquals(t_RightNode, t_aNodes[6]);
+
+           assertNotNull(t_aEdges[t_iIndex]);
+           t_LeftNode = t_aEdges[t_iIndex].getLeftNode();
+           assertNotNull(t_LeftNode);
+           assertEquals(t_LeftNode, t_aNodes[6]);
+           t_RightNode = t_aEdges[t_iIndex++].getRightNode();
+           assertNotNull(t_RightNode);
+           assertEquals(t_RightNode, t_aNodes[7]);
         }
         catch  (final Throwable throwable)
         {
+            throwable.printStackTrace(System.err);
+
             LogFactory.getLog(getClass()).fatal(throwable);
 
             fail("" + throwable);

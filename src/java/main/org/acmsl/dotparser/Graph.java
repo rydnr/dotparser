@@ -81,14 +81,14 @@ import org.apache.commons.logging.LogFactory;
 public class Graph
 {
     /**
+     * The name.
+     */
+    private String m__strName;
+
+    /**
      * Whether the graph is directed or not.
      */
     private boolean m__bDirected;
-
-    /**
-     * The graph name.
-     */
-    private String m__strName;
 
     /**
      * The nodes.
@@ -112,33 +112,6 @@ public class Graph
         immutableSetDirected(directed);
         immutableSetNodes(new ArrayList());
         immutableSetEdges(new ArrayList());
-    }
-
-    /**
-     * Specifies whether the graph is directed or not.
-     * @param directed such type.
-     */
-    protected final void immutableSetDirected(final boolean directed)
-    {
-        m__bDirected = directed;
-    }
-
-    /**
-     * Specifies whether the graph is directed or not.
-     * @param directed such type.
-     */
-    protected void setDirected(final boolean directed)
-    {
-        immutableSetDirected(directed);
-    }
-
-    /**
-     * Retrieves whether the graph is directed or not.
-     * @return such type.
-     */
-    public boolean getDirected()
-    {
-        return m__bDirected;
     }
 
     /**
@@ -166,6 +139,33 @@ public class Graph
     public String getName()
     {
         return m__strName;
+    }
+
+    /**
+     * Specifies whether the graph is directed or not.
+     * @param directed such type.
+     */
+    protected final void immutableSetDirected(final boolean directed)
+    {
+        m__bDirected = directed;
+    }
+
+    /**
+     * Specifies whether the graph is directed or not.
+     * @param directed such type.
+     */
+    protected void setDirected(final boolean directed)
+    {
+        immutableSetDirected(directed);
+    }
+
+    /**
+     * Retrieves whether the graph is directed or not.
+     * @return such type.
+     */
+    public boolean getDirected()
+    {
+        return m__bDirected;
     }
 
     /**

@@ -55,12 +55,44 @@ public class Node
     extends  AbstractArgumentContainer
 {
     /**
+     * The name.
+     */
+    private String m__strName;
+
+    /**
      * Creates a <code>Node</code> instance.
      * @param name the node name.
      * @precondition name != null
      */
     public Node(final String name)
     {
-        super(name);
+        immutableSetName(name);
+    }
+
+    /**
+     * Specifies the graph name.
+     * @param name the name.
+     */
+    protected final void immutableSetName(final String name)
+    {
+        m__strName = name;
+    }
+
+    /**
+     * Specifies the graph name.
+     * @param name the name.
+     */
+    protected void setName(final String name)
+    {
+        immutableSetName(name);
+    }
+
+    /**
+     * Retrieves the graph name.
+     * @return the name.
+     */
+    public String getName()
+    {
+        return m__strName;
     }
 }

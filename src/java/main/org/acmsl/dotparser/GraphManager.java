@@ -44,6 +44,7 @@ package org.acmsl.dotparser;
  */
 import org.acmsl.dotparser.antlr.DotLexer;
 import org.acmsl.dotparser.antlr.DotParser;
+import org.acmsl.dotparser.ArgumentContainer;
 
 /*
  * Importing ANTLR classes.
@@ -62,6 +63,7 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -80,9 +82,14 @@ import org.apache.commons.logging.LogFactory;
 public class GraphManager
 {
     /**
-     * An empty cached List array.
+     * Identifies nodes.
      */
-    public static final List[] EMPTY_LIST_ARRAY = new List[0];
+    public static final int NODE = 2;
+
+    /**
+     * Identifies edges.
+     */
+    public static final int EDGE = 3;
 
     /**
      * The Dot document.
@@ -191,7 +198,52 @@ public class GraphManager
         {
             AST t_AST = buildAST(inputStream);
 
-            result = new Graph(retrieveName(t_AST), retrieveDirected(t_AST));
+            result =
+                new Graph(retrieveName(t_AST), retrieveDirected(t_AST));
+
+            t_AST = t_AST.getFirstChild();
+
+            int t_iType = -1;
+
+            String t_strCurrentNodeName = null;
+            Node t_CurrentNode = null;
+            Edge t_CurrentEdge = null;
+            Node t_LeftNode = null;
+            Node t_RightNode = null;
+            
+            Map t_mDefinedNodes = new HashMap();
+
+            while  (t_AST != null)
+            {
+                t_AST = t_AST.getNextSibling();
+
+                t_iType = retrieveType(t_AST);
+
+                switch  (t_iType)
+                {
+                    case  NODE:
+                        t_strCurrentNodeName = t_AST.getText();
+                        t_CurrentNode = new Node(t_strCurrentNodeName);
+                        addArguments(t_AST, t_CurrentNode);
+                        t_mDefinedNodes.put(
+                            t_strCurrentNodeName, t_CurrentNode);
+                        result.add(t_CurrentNode);
+                        break;
+
+                    case  EDGE:
+                        t_LeftNode =
+                            retrieveLeftNode(t_AST, t_mDefinedNodes);
+                        t_RightNode =
+                            retrieveRightNode(t_AST, t_mDefinedNodes);
+                        t_CurrentEdge = new Edge(t_LeftNode, t_RightNode);
+                        addArguments(t_AST, t_CurrentEdge);
+                        result.add(t_CurrentEdge);
+                        break;
+
+                    default:
+                        break;
+                }
+            }
         }
         catch  (final RecognitionException recognitionException)
         {
@@ -265,5 +317,130 @@ public class GraphManager
     protected boolean retrieveDirected(final AST ast)
     {
         return "digraph".equalsIgnoreCase(ast.getText());
+    }
+
+    /**
+     * Retrieves the type of the root node of given AST.
+     * @param ast the AST.
+     * @return the type of the root node.
+     */
+    protected int retrieveType(final AST ast)
+    {
+        int result = -1;
+
+        AST t_AST = ast;
+
+        if  (t_AST != null)
+        {
+            t_AST = ast.getFirstChild();
+        }
+
+        if  (t_AST != null)
+        {
+            String t_strValue = t_AST.getText();
+
+            if  (   (t_AST.getNextSibling() != null)
+                 && (   ("--".equals(t_strValue))
+                     || ("->".equals(t_strValue))))
+            {
+                result = EDGE;
+            }
+            else
+            {
+                while  (t_AST != null)
+                {
+                    if  (t_AST.getFirstChild() != null)
+                    {
+                        result = NODE;
+                        break;
+                    }
+
+                    t_AST = t_AST.getNextSibling();
+                }
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * Adds the arguments found on given AST.
+     * @param ast the AST.
+     * @param container the argument container.
+     * @precondition ast != null
+     * @precondition container != null
+     */
+    protected void addArguments(
+        final AST ast, final ArgumentContainer container)
+    {
+        AST t_CurrentAST = ast.getFirstChild();
+
+        if  (t_CurrentAST != null)
+        {
+            t_CurrentAST = t_CurrentAST.getNextSibling();
+        }
+
+        while  (t_CurrentAST != null)
+        {
+            container.add(t_CurrentAST.getText(), retrieveName(t_CurrentAST));
+
+            t_CurrentAST = t_CurrentAST.getNextSibling();
+        }
+    }
+
+    /**
+     * Retrieves the left side of given edge.
+     * @param ast the AST.
+     * @param definedNodes the already defined nodes.
+     * @return the left-side node.
+     * @precondition ast != null
+     */
+    protected Node retrieveLeftNode(final AST ast, final Map definedNodes)
+    {
+        Node result = null;
+
+        String t_strName = ast.getText();
+
+        result = (Node) definedNodes.get(t_strName);
+
+        if  (result == null)
+        {
+            result = new Node(t_strName);
+        }
+
+        return result;
+    }
+
+    /**
+     * Retrieves the right side of given edge.
+     * @param ast the AST.
+     * @param definedNodes the already defined nodes.
+     * @return the right-side node.
+     * @precondition ast != null
+     */
+    protected Node retrieveRightNode(final AST ast, final Map definedNodes)
+    {
+        Node result = null;
+
+        AST t_AST = ast.getFirstChild();
+
+        if  (t_AST != null)
+        {
+            t_AST = t_AST.getNextSibling();
+        }
+
+        if  (t_AST != null)
+        {
+            String t_strName = t_AST.getText();
+
+            result = (Node) definedNodes.get(t_strName);
+
+            if  (result == null)
+            {
+                result = new Node(t_strName);
+            }
+        }
+
+        return result;
     }
 }

@@ -67,16 +67,13 @@ public class Edge
 
     /**
      * Creates a <code>Edge</code> instance.
-     * @param name the edge name.
      * @param leftNode the node on the left.
      * @param rightNode the node on the right.
-     * @precondition name != null
      * @precondition leftNode != null
      * @precondition rightNode != null
      */
-    public Edge(final String name, final Node leftNode, final Node rightNode)
+    public Edge(final Node leftNode, final Node rightNode)
     {
-        super(name);
         immutableSetLeftNode(leftNode);
         immutableSetRightNode(rightNode);
     }

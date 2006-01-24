@@ -41,6 +41,11 @@
 package org.acmsl.dotparser;
 
 /*
+ * Importing some project classes.
+ */
+import org.acmsl.dotparser.ArgumentContainer;
+
+/*
  * Importing some JDK classes.
  */
 import java.util.ArrayList;
@@ -59,12 +64,8 @@ import java.util.Map;
  *         >Jose San Leandro</a>
  */
 public abstract class AbstractArgumentContainer
+    implements  ArgumentContainer
 {
-    /**
-     * The name.
-     */
-    private String m__strName;
-
     /**
      * The argument names.
      */
@@ -77,43 +78,12 @@ public abstract class AbstractArgumentContainer
 
     /**
      * Creates an <code>AbstractArgumentContainer</code> instance.
-     * @param name the name.
-     * @precondition name != null
      */
-    public AbstractArgumentContainer(final String name)
+    public AbstractArgumentContainer()
     {
-        immutableSetName(name);
         immutableSetArgNames(new ArrayList());
         immutableSetArgValues(new HashMap());
     }
-
-    /**
-     * Specifies the graph name.
-     * @param name the name.
-     */
-    protected final void immutableSetName(final String name)
-    {
-        m__strName = name;
-    }
-
-    /**
-     * Specifies the graph name.
-     * @param name the name.
-     */
-    protected void setName(final String name)
-    {
-        immutableSetName(name);
-    }
-
-    /**
-     * Retrieves the graph name.
-     * @return the name.
-     */
-    public String getName()
-    {
-        return m__strName;
-    }
-
     /**
      * Specifies the argument names.
      * @param names the names.
@@ -193,7 +163,7 @@ public abstract class AbstractArgumentContainer
      * @precondition name != null
      * @precondition value != null
      */
-    void add(final String name, final String value)
+    public void add(final String name, final String value)
     {
         add(name, value, immutableGetArgNames(), immutableGetArgValues());
     }

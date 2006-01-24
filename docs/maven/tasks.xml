@@ -16,7 +16,7 @@
         <p>
           <ul>
             <li>
-              Write the initial logic-less ANTLR grammar for the DOT language.
+              Write the ANTLR grammar for the DOT language.
             </li>
           </ul>
         </p>
