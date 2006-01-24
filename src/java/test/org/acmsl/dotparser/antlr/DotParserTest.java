@@ -1,3 +1,4 @@
+//;-*- mode: java -*-
 /*
                        DotParser
 
@@ -91,7 +92,6 @@ public class DotParserTest
     public static final String TEST_INPUT_1 =
           "digraph nlpMessagingGenerator {\n"
         + "    start [label=\"\", shape=circle, fillcolor=black, fixedsize=true, width=0.2];\n\n"
-        // 12345678901
         + "    readXml [label=\"Read XML\"];\n"
         + "    retrieveNextCommType [label=\"Retrieve next\nCommunication Type\"];\n"
         + "    checkCommType[label=\"Check whether\nCommunication Type\nexists\", fillcolor=\"orange\", shape=\"diamond\"];\n"
@@ -211,16 +211,13 @@ public class DotParserTest
 
            assertNotNull(t_DotParser.getAST());
 
+           /*
            antlr.debug.misc.ASTFrame frame =
                new antlr.debug.misc.ASTFrame(
                    "AST JTree Example", t_DotParser.getAST());
            frame.setVisible(true);
+           */
 
-           while  (true)
-           {
-           } // end of while  ()
-
-           /*
            t_DotLexer =
                new DotLexer(
                    new StringBufferInputStream(TEST_INPUT_2));
@@ -238,7 +235,6 @@ public class DotParserTest
            t_DotParser.graph();
 
            assertNotNull(t_DotParser.getAST());
-           */
         }
         catch  (final Throwable throwable)
         {

@@ -49,6 +49,7 @@ package org.acmsl.dotparser;
 /*
  * Importing some project-specific classes.
  */
+import org.acmsl.dotparser.Graph;
 import org.acmsl.dotparser.GraphManager;
 import org.acmsl.dotparser.antlr.DotParserTest;
 
@@ -62,7 +63,6 @@ import junit.framework.TestCase;
  */
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
-import java.util.List;
 
 /*
  * Importing some Commons Logging classes.
@@ -98,15 +98,15 @@ public class GraphManagerTest
        try 
        {
            InputStream t_isDotInput =
-               new StringBufferInputStream(DotParserTest.TEST_INPUT_1);
+               new StringBufferInputStream(DotParserTest.TEST_INPUT_2);
 
            GraphManager t_GraphManager = new GraphManager(t_isDotInput);
 
            assertNotNull(t_GraphManager);
 
-           List[] t_aLists = t_GraphManager.parse(t_isDotInput);
+           Graph t_Graph = t_GraphManager.getGraph();
 
-           assertNotNull(t_aLists);
+           assertNotNull(t_Graph);
         }
         catch  (final Throwable throwable)
         {

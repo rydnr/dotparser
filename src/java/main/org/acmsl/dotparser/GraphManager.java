@@ -90,14 +90,9 @@ public class GraphManager
     private InputStream m__DotInputStream;
 
     /**
-     * The nodes.
+     * The graph.
      */
-    private List m__lNodes;
-
-    /**
-     * The edges.
-     */
-    private List m__lEdges;
+    private Graph m__Graph;
 
     /**
      * Creates a <code>GraphManager</code> instance.
@@ -137,90 +132,47 @@ public class GraphManager
     }
 
     /**
-     * Specifies the nodes.
-     * @param nodes the nodes.
+     * Specifies the graph.
+     * @param graph the graph.
      */
-    protected final void immutableSetNodes(final List nodes)
+    protected final void immutableSetGraph(final Graph graph)
     {
-        m__lNodes = nodes;
+        m__Graph = graph;
     }
 
     /**
-     * Specifies the nodes.
-     * @param nodes the nodes.
+     * Specifies the graph.
+     * @param graph the graph.
      */
-    protected void setNodes(final List nodes)
+    protected void setGraph(final Graph graph)
     {
-        immutableSetNodes(nodes);
+        immutableSetGraph(graph);
     }
 
     /**
-     * Retrieves the nodes.
-     * @return such list.
+     * Retrieves the graph.
+     * @return such graph.
      */
-    protected final List immutableGetNodes()
+    protected final Graph immutableGetGraph()
     {
-        return m__lNodes;
-    }
-
-    /**
-     * Retrieves the nodes.
-     * @return such list.
-     */
-    public List getNodes()
-    {
-        return Collections.unmodifiableList(immutableGetNodes());
-    }
-
-    /**
-     * Specifies the edges.
-     * @param edges the edges.
-     */
-    protected final void immutableSetEdges(final List edges)
-    {
-        m__lEdges = edges;
-    }
-
-    /**
-     * Specifies the edges.
-     * @param edges the edges.
-     */
-    protected void setEdges(final List edges)
-    {
-        immutableSetEdges(edges);
-    }
-
-    /**
-     * Retrieves the edges.
-     * @return such list.
-     */
-    protected final List immutableGetEdges()
-    {
-        return m__lEdges;
-    }
-
-    /**
-     * Retrieves the edges.
-     * @return such list.
-     */
-    public List getEdges()
-    {
-        return Collections.unmodifiableList(immutableGetEdges());
+        return m__Graph;
     }
 
     /**
      * Parses the Dot input stream.
      */
-    protected void parse()
+    public Graph getGraph()
     {
-        List[] t_aLists = parse(getDotInputStream());
+        Graph result = immutableGetGraph();
 
-        if  (   (t_aLists != null)
-             && (t_aLists.length >= 2))
+        if  (result == null)
         {
-            setNodes(t_aLists[0]);
-            setEdges(t_aLists[1]);
+            result = buildGraph(getDotInputStream());
+
+            setGraph(result);
         }
+
+        return result;
     }
 
     /**
@@ -231,18 +183,15 @@ public class GraphManager
      * the list of nodes, and the second the edges.
      * @precondition inputStream != null
      */
-    List[] parse(final InputStream inputStream)
+    Graph buildGraph(final InputStream inputStream)
     {
-        List[] result = EMPTY_LIST_ARRAY;
-
-        List t_aNodes = new ArrayList();
-        List a_aEdges = new ArrayList();
+        Graph result = null;
 
         try
         {
             AST t_AST = buildAST(inputStream);
 
-            System.out.println(t_AST.toStringTree());
+            result = new Graph(retrieveName(t_AST), retrieveDirected(t_AST));
         }
         catch  (final RecognitionException recognitionException)
         {
@@ -283,6 +232,32 @@ public class GraphManager
         t_DotParser.graph();
 
         result = t_DotParser.getAST();
+
+        return result;
+    }
+
+    /**
+     * Retrieves the name of the AST, that is, its first child.
+     * @param ast the tree.
+     * @return the node.
+     * @precondition ast != null
+     */
+    protected String retrieveName(final AST ast)
+    {
+        String result = null;
+
+        return result;
+    }
+
+    /**
+     * Retrieves whether the graph is directed or not.
+     * @param ast the tree.
+     * @return the type of graph.
+     * @precondition ast != null
+     */
+    protected boolean retrieveDirected(final AST ast)
+    {
+        boolean result = true;
 
         return result;
     }
