@@ -89,7 +89,7 @@ protected node_stmt[String id, String port]
     ;
 
 protected attr_stmt
-    :  (GRAPH_LITERAL^ | NODE_LITERAL^ | EDGE_LITERAL^) attr_list
+    :  (GRAPH_LITERAL^ | NODE_LITERAL^ | EDGE_LITERAL^) (attr_list)
     ;
 
 protected attr_list
@@ -97,7 +97,11 @@ protected attr_list
     ;
 
 protected a_list
-    :  ID^ (EQUAL! ID)? (COMMA!)? (a_list)?
+    :  (arg) (COMMA!)? (a_list)?
+    ;
+
+protected arg
+    :  ID^ (EQUAL! ID)?
     ;
 
 protected edgeRHS
