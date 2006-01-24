@@ -43,8 +43,6 @@ header
   package org.acmsl.dotparser.antlr;
 }
 {
-import java.util.ArrayList;
-import java.util.List;
 }
 class DotLexer extends Lexer;
 
@@ -55,8 +53,6 @@ options
     exportVocab=Dot;
 }
 {
-  List nodes = new ArrayList();
-  List links = new ArrayList();
 }
 
 LITERALS
@@ -161,6 +157,7 @@ WS
 COMMENT
     :  (  ("/*") => ML_COMMENT
         | ("//") => SL_COMMENT)
+       {$setType(Token.SKIP); newline();}
     ;
 
 // Taken from ANTLR's Java grammar.
@@ -182,7 +179,8 @@ protected ML_COMMENT
               newline is ambiguous.  Consequently, the resulting grammar
               must be ambiguous.  I'm shutting this warning off.
             */
-            options {
+            options
+            {
                 generateAmbigWarnings=false;
             }
 	:
