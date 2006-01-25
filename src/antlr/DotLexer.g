@@ -133,11 +133,11 @@ protected NUMBER
     ;
 
 protected QUOTEDSTR
-    :  '"'
+    :  '"'!
        (  ("\\\"") => "\\\""
         | ~('"')
        )*
-       '"'
+       '"'!
     ;
 
 protected HTMLSTR

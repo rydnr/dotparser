@@ -82,6 +82,11 @@ import org.apache.commons.logging.LogFactory;
 public class GraphManager
 {
     /**
+     * Identifies graph arguments.
+     */
+    public static final int GRAPH_ARGUMENT = 1;
+
+    /**
      * Identifies nodes.
      */
     public static final int NODE = 2;
@@ -221,6 +226,10 @@ public class GraphManager
 
                 switch  (t_iType)
                 {
+                    case  GRAPH_ARGUMENT:
+                        addGraphArguments(t_AST, result);
+                        break;
+
                     case  NODE:
                         t_strCurrentNodeName = t_AST.getText();
                         t_CurrentNode = new Node(t_strCurrentNodeName);
@@ -235,7 +244,11 @@ public class GraphManager
                             retrieveLeftNode(t_AST, t_mDefinedNodes);
                         t_RightNode =
                             retrieveRightNode(t_AST, t_mDefinedNodes);
-                        t_CurrentEdge = new Edge(t_LeftNode, t_RightNode);
+                        t_CurrentEdge =
+                            new Edge(
+                                t_LeftNode,
+                                t_RightNode,
+                                retrieveEdgeDirected(t_AST));
                         addArguments(t_AST, t_CurrentEdge);
                         result.add(t_CurrentEdge);
                         break;
@@ -303,6 +316,11 @@ public class GraphManager
         if  (name != null)
         {
             result = name.getText();
+
+            if  (result == null)
+            {
+                result = "";
+            }
         }
 
         return result;
@@ -347,15 +365,16 @@ public class GraphManager
             }
             else
             {
-                while  (t_AST != null)
+                if  (t_AST != null)
                 {
                     if  (t_AST.getFirstChild() != null)
                     {
                         result = NODE;
-                        break;
                     }
-
-                    t_AST = t_AST.getNextSibling();
+                    else
+                    {
+                        result = GRAPH_ARGUMENT;
+                    }
                 }
             }
         }
@@ -370,15 +389,48 @@ public class GraphManager
      * @precondition ast != null
      * @precondition container != null
      */
+    protected void addGraphArguments(
+        final AST ast, final ArgumentContainer container)
+    {
+        AST t_CurrentAST = ast;
+
+        AST t_ChildAST = null;
+        String t_strName = null;
+        String t_strValue = null;
+        int t_iType = retrieveType(t_CurrentAST);
+
+        while  (t_iType == GRAPH_ARGUMENT)
+        {
+            t_strName = t_CurrentAST.getText();
+
+            t_ChildAST = t_CurrentAST.getFirstChild();
+
+            if  (   (t_ChildAST != null)
+                 && (t_ChildAST.getFirstChild() == null)
+                 && (t_ChildAST.getNextSibling() == null))
+            {
+                t_strValue = t_ChildAST.getText();
+
+                container.add(t_strName, t_strValue);
+            }
+
+            t_CurrentAST = t_CurrentAST.getNextSibling();
+
+            t_iType = retrieveType(t_CurrentAST);
+        }
+    }
+
+    /**
+     * Adds the arguments found on given AST.
+     * @param ast the AST.
+     * @param container the argument container.
+     * @precondition ast != null
+     * @precondition container != null
+     */
     protected void addArguments(
         final AST ast, final ArgumentContainer container)
     {
         AST t_CurrentAST = ast.getFirstChild();
-
-        if  (t_CurrentAST != null)
-        {
-            t_CurrentAST = t_CurrentAST.getNextSibling();
-        }
 
         while  (t_CurrentAST != null)
         {
@@ -439,6 +491,28 @@ public class GraphManager
             {
                 result = new Node(t_strName);
             }
+        }
+
+        return result;
+    }
+
+    /**
+     * Retrieves whether the edge is directed or not.
+     * @param ast the AST.
+     * @return such attribute.
+     * @precondition ast != null
+     */
+    protected boolean retrieveEdgeDirected(final AST ast)
+    {
+        boolean result = false;
+
+        AST t_AST = ast.getFirstChild();
+
+        if  (t_AST != null)
+        {
+            String t_strValue = t_AST.getText();
+
+            result = "->".equals(t_strValue);
         }
 
         return result;

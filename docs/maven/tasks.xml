@@ -12,6 +12,15 @@
         Lists of "to-do"s and ideas for future versions.
       </p>
 
+      <subsection name="0.2">
+        <p>
+          <ul>
+            <li>
+              Support graph attributes (which aren't neither nodes nor edges).
+            </li>
+          </ul>
+        </p>
+      </subsection>
       <subsection name="0.1">
         <p>
           <ul>

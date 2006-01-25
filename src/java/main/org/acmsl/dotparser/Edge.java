@@ -56,6 +56,11 @@ public class Edge
     extends  AbstractArgumentContainer
 {
     /**
+     * Whether the edge is directed or not.
+     */
+    private boolean m__bDirected;
+
+    /**
      * The node on the left.
      */
     private Node m__LeftNode;
@@ -69,13 +74,16 @@ public class Edge
      * Creates a <code>Edge</code> instance.
      * @param leftNode the node on the left.
      * @param rightNode the node on the right.
+     * @param directed whether the edge is directed or not.
      * @precondition leftNode != null
      * @precondition rightNode != null
      */
-    public Edge(final Node leftNode, final Node rightNode)
+    public Edge(
+        final Node leftNode, final Node rightNode, final boolean directed)
     {
         immutableSetLeftNode(leftNode);
         immutableSetRightNode(rightNode);
+        immutableSetDirected(directed);
     }
 
     /**
@@ -130,5 +138,32 @@ public class Edge
     public Node getRightNode()
     {
         return m__RightNode;
+    }
+
+    /**
+     * Specifies if the node is directed.
+     * @param flag such property.
+     */
+    protected final void immutableSetDirected(final boolean flag)
+    {
+        m__bDirected = flag;
+    }
+
+    /**
+     * Specifies if the node is directed.
+     * @param flag such property.
+     */
+    protected void setDirected(final boolean flag)
+    {
+        immutableSetDirected(flag);
+    }
+
+    /**
+     * Retrieves whether the edge is directed.
+     * @return such property.
+     */
+    public boolean getDirected()
+    {
+        return m__bDirected;
     }
 }

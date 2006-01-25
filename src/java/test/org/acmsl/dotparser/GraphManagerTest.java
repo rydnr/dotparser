@@ -64,6 +64,7 @@ import junit.framework.TestCase;
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
 import java.util.List;
+import java.util.Map;
 
 /*
  * Importing some Commons Logging classes.
@@ -91,10 +92,12 @@ public class GraphManagerTest
     }
 
     /**
-     * Tests <code>GraphManager.parse(InputStream)</code> method.
-     * @see org.acmsl.dotparser.GraphManager#parse(java.io.InputStream)
+     * Tests <code>GraphManager.getGraph()</code> method, with the
+     * input defined in <code>DotParserTest.TEST_INPUT_1</code>.
+     * @see org.acmsl.dotparser.GraphManager#getGraph()
+     * @see org.acmsl.dotparser.antlr.DotParserTest#TEST_INPUT_1
      */
-    public void testParse()
+    public void testParse1()
     {
        try 
        {
@@ -121,31 +124,48 @@ public class GraphManagerTest
            assertTrue(t_aNodes.length == 8);
            int t_iIndex = 0;
 
-           assertNotNull(t_aNodes[t_iIndex]);
-           assertEquals(
-               "start", t_aNodes[t_iIndex++].getName());
-           assertNotNull(t_aNodes[t_iIndex]);
-           assertEquals(
-               "readXml", t_aNodes[t_iIndex++].getName());
-           assertNotNull(t_aNodes[t_iIndex]);
-           assertEquals(
-               "retrieveNextCommType", t_aNodes[t_iIndex++].getName());
-           assertNotNull(t_aNodes[t_iIndex]);
-           assertEquals(
-               "checkCommType", t_aNodes[t_iIndex++].getName());
-           assertNotNull(t_aNodes[t_iIndex]);
-           assertEquals(
-               "createCommType", t_aNodes[t_iIndex++].getName());
-           assertNotNull(t_aNodes[t_iIndex]);
-           assertEquals(
-               "createTemplate", t_aNodes[t_iIndex++].getName());
-           assertNotNull(t_aNodes[t_iIndex]);
-           assertEquals(
-               "error", t_aNodes[t_iIndex++].getName());
-           assertNotNull(t_aNodes[t_iIndex]);
-           assertEquals(
-               "end", t_aNodes[t_iIndex++].getName());
-           
+           testNode(t_aNodes[t_iIndex], "start");
+           testArg(t_aNodes[t_iIndex], "label", "");
+           testArg(t_aNodes[t_iIndex], "shape", "circle");
+           testArg(t_aNodes[t_iIndex], "fillcolor", "black");
+           testArg(t_aNodes[t_iIndex], "fixedsize", "true");
+           testArg(t_aNodes[t_iIndex++], "width", "0.2");
+
+           testNode(t_aNodes[t_iIndex], "readXml");
+           testArg(t_aNodes[t_iIndex++], "label", "Read XML");
+
+           testNode(t_aNodes[t_iIndex], "retrieveNextCommType");
+           testArg(
+               t_aNodes[t_iIndex++],
+               "label",
+               "Retrieve next\nCommunication Type");
+
+           testNode(t_aNodes[t_iIndex], "checkCommType");
+           testArg(
+               t_aNodes[t_iIndex++],
+               "label",
+               "Check whether\nCommunication Type\nexists");
+
+           testNode(t_aNodes[t_iIndex], "createCommType");
+           testArg(
+               t_aNodes[t_iIndex++], "label", "Create Communication Type");
+
+           testNode(t_aNodes[t_iIndex], "createTemplate");
+           testArg(
+               t_aNodes[t_iIndex++], "label", "Create Template");
+
+           testNode(t_aNodes[t_iIndex], "error");
+           testArg(t_aNodes[t_iIndex], "label", "Error");
+           testArg(t_aNodes[t_iIndex], "layer", "error");
+           testArg(t_aNodes[t_iIndex++], "fillcolor", "red");
+
+           testNode(t_aNodes[t_iIndex], "end");
+           testArg(t_aNodes[t_iIndex], "label", "");
+           testArg(t_aNodes[t_iIndex], "shape", "doublecircle");
+           testArg(t_aNodes[t_iIndex], "fillcolor", "black");
+           testArg(t_aNodes[t_iIndex], "fixedsize", "true");
+           testArg(t_aNodes[t_iIndex++], "width", "0.2");
+
            List t_lEdges = t_Graph.getEdges();
            Edge[] t_aEdges = (Edge[]) t_lEdges.toArray(new Edge[0]);
 
@@ -154,117 +174,70 @@ public class GraphManagerTest
            Node t_LeftNode = null;
            Node t_RightNode = null;
 
-           assertNotNull(t_aEdges[t_iIndex]);
-           t_LeftNode = t_aEdges[t_iIndex].getLeftNode();
-           assertNotNull(t_LeftNode);
-           assertEquals(t_LeftNode, t_aNodes[0]);
-           t_RightNode = t_aEdges[t_iIndex++].getRightNode();
-           assertNotNull(t_RightNode);
-           assertEquals(t_RightNode, t_aNodes[1]);
+           testEdge(t_aEdges[t_iIndex], t_aNodes[0], t_aNodes[1], false);
+           testArg(t_aEdges[t_iIndex++], "label", "0");
 
-           assertNotNull(t_aEdges[t_iIndex]);
-           t_LeftNode = t_aEdges[t_iIndex].getLeftNode();
-           assertNotNull(t_LeftNode);
-           assertEquals(t_LeftNode, t_aNodes[1]);
-           t_RightNode = t_aEdges[t_iIndex++].getRightNode();
-           assertNotNull(t_RightNode);
-           assertEquals(t_RightNode, t_aNodes[2]);
+           testEdge(t_aEdges[t_iIndex], t_aNodes[1], t_aNodes[2], false);
+           testArg(t_aEdges[t_iIndex++], "label", "0");
 
-           assertNotNull(t_aEdges[t_iIndex]);
-           t_LeftNode = t_aEdges[t_iIndex].getLeftNode();
-           assertNotNull(t_LeftNode);
-           assertEquals(t_LeftNode, t_aNodes[1]);
-           t_RightNode = t_aEdges[t_iIndex++].getRightNode();
-           assertNotNull(t_RightNode);
-           assertEquals(t_RightNode, t_aNodes[6]);
+           testEdge(t_aEdges[t_iIndex], t_aNodes[1], t_aNodes[6], false);
+           testArg(t_aEdges[t_iIndex], "label", "-1");
+           testArg(t_aEdges[t_iIndex], "layer", "error");
+           testArg(t_aEdges[t_iIndex], "color", "gray85");
+           testArg(t_aEdges[t_iIndex++], "fontcolor", "gray85");
 
-           assertNotNull(t_aEdges[t_iIndex]);
-           t_LeftNode = t_aEdges[t_iIndex].getLeftNode();
-           assertNotNull(t_LeftNode);
-           assertEquals(t_LeftNode, t_aNodes[2]);
-           t_RightNode = t_aEdges[t_iIndex++].getRightNode();
-           assertNotNull(t_RightNode);
-           assertEquals(t_RightNode, t_aNodes[3]);
+           testEdge(t_aEdges[t_iIndex], t_aNodes[2], t_aNodes[3], false);
+           testArg(t_aEdges[t_iIndex], "label", "0");
+           testArg(t_aEdges[t_iIndex++], "decorate", "true");
 
-           assertNotNull(t_aEdges[t_iIndex]);
-           t_LeftNode = t_aEdges[t_iIndex].getLeftNode();
-           assertNotNull(t_LeftNode);
-           assertEquals(t_LeftNode, t_aNodes[2]);
-           t_RightNode = t_aEdges[t_iIndex++].getRightNode();
-           assertNotNull(t_RightNode);
-           assertEquals(t_RightNode, t_aNodes[7]);
+           testEdge(t_aEdges[t_iIndex], t_aNodes[2], t_aNodes[7], false);
+           testArg(t_aEdges[t_iIndex], "label", "1");
+           testArg(t_aEdges[t_iIndex], "color", "darkgoldenrod4");
+           testArg(t_aEdges[t_iIndex++], "fontcolor", "darkgoldenrod4");
 
-           assertNotNull(t_aEdges[t_iIndex]);
-           t_LeftNode = t_aEdges[t_iIndex].getLeftNode();
-           assertNotNull(t_LeftNode);
-           assertEquals(t_LeftNode, t_aNodes[2]);
-           t_RightNode = t_aEdges[t_iIndex++].getRightNode();
-           assertNotNull(t_RightNode);
-           assertEquals(t_RightNode, t_aNodes[6]);
+           testEdge(t_aEdges[t_iIndex], t_aNodes[2], t_aNodes[6], false);
+           testArg(t_aEdges[t_iIndex], "label", "-1");
+           testArg(t_aEdges[t_iIndex], "layer", "error");
+           testArg(t_aEdges[t_iIndex], "color", "gray85");
+           testArg(t_aEdges[t_iIndex++], "fontcolor", "gray85");
 
-           assertNotNull(t_aEdges[t_iIndex]);
-           t_LeftNode = t_aEdges[t_iIndex].getLeftNode();
-           assertNotNull(t_LeftNode);
-           assertEquals(t_LeftNode, t_aNodes[3]);
-           t_RightNode = t_aEdges[t_iIndex++].getRightNode();
-           assertNotNull(t_RightNode);
-           assertEquals(t_RightNode, t_aNodes[2]);
+           testEdge(t_aEdges[t_iIndex], t_aNodes[3], t_aNodes[2], false);
+           testArg(t_aEdges[t_iIndex++], "label", "0");
 
-           assertNotNull(t_aEdges[t_iIndex]);
-           t_LeftNode = t_aEdges[t_iIndex].getLeftNode();
-           assertNotNull(t_LeftNode);
-           assertEquals(t_LeftNode, t_aNodes[3]);
-           t_RightNode = t_aEdges[t_iIndex++].getRightNode();
-           assertNotNull(t_RightNode);
-           assertEquals(t_RightNode, t_aNodes[4]);
+           testEdge(t_aEdges[t_iIndex], t_aNodes[3], t_aNodes[4], false);
+           testArg(t_aEdges[t_iIndex], "label", "1");
+           testArg(t_aEdges[t_iIndex], "color", "darkgoldenrod4");
+           testArg(t_aEdges[t_iIndex++], "fontcolor", "darkgoldenrod4");
 
-           assertNotNull(t_aEdges[t_iIndex]);
-           t_LeftNode = t_aEdges[t_iIndex].getLeftNode();
-           assertNotNull(t_LeftNode);
-           assertEquals(t_LeftNode, t_aNodes[3]);
-           t_RightNode = t_aEdges[t_iIndex++].getRightNode();
-           assertNotNull(t_RightNode);
-           assertEquals(t_RightNode, t_aNodes[6]);
+           testEdge(t_aEdges[t_iIndex], t_aNodes[3], t_aNodes[6], false);
+           testArg(t_aEdges[t_iIndex], "label", "-1");
+           testArg(t_aEdges[t_iIndex], "layer", "error");
+           testArg(t_aEdges[t_iIndex], "color", "gray85");
+           testArg(t_aEdges[t_iIndex++], "fontcolor", "gray85");
 
-           assertNotNull(t_aEdges[t_iIndex]);
-           t_LeftNode = t_aEdges[t_iIndex].getLeftNode();
-           assertNotNull(t_LeftNode);
-           assertEquals(t_LeftNode, t_aNodes[4]);
-           t_RightNode = t_aEdges[t_iIndex++].getRightNode();
-           assertNotNull(t_RightNode);
-           assertEquals(t_RightNode, t_aNodes[5]);
+           testEdge(t_aEdges[t_iIndex], t_aNodes[4], t_aNodes[5], false);
+           testArg(t_aEdges[t_iIndex++], "label", "0");
 
-           assertNotNull(t_aEdges[t_iIndex]);
-           t_LeftNode = t_aEdges[t_iIndex].getLeftNode();
-           assertNotNull(t_LeftNode);
-           assertEquals(t_LeftNode, t_aNodes[4]);
-           t_RightNode = t_aEdges[t_iIndex++].getRightNode();
-           assertNotNull(t_RightNode);
-           assertEquals(t_RightNode, t_aNodes[6]);
+           testEdge(t_aEdges[t_iIndex], t_aNodes[4], t_aNodes[6], false);
+           testArg(t_aEdges[t_iIndex], "label", "-1");
+           testArg(t_aEdges[t_iIndex], "layer", "error");
+           testArg(t_aEdges[t_iIndex], "color", "gray85");
+           testArg(t_aEdges[t_iIndex++], "fontcolor", "gray85");
 
-           assertNotNull(t_aEdges[t_iIndex]);
-           t_LeftNode = t_aEdges[t_iIndex].getLeftNode();
-           assertNotNull(t_LeftNode);
-           assertEquals(t_LeftNode, t_aNodes[5]);
-           t_RightNode = t_aEdges[t_iIndex++].getRightNode();
-           assertNotNull(t_RightNode);
-           assertEquals(t_RightNode, t_aNodes[2]);
+           testEdge(t_aEdges[t_iIndex], t_aNodes[5], t_aNodes[2], false);
+           testArg(t_aEdges[t_iIndex++], "label", "0");
 
-           assertNotNull(t_aEdges[t_iIndex]);
-           t_LeftNode = t_aEdges[t_iIndex].getLeftNode();
-           assertNotNull(t_LeftNode);
-           assertEquals(t_LeftNode, t_aNodes[5]);
-           t_RightNode = t_aEdges[t_iIndex++].getRightNode();
-           assertNotNull(t_RightNode);
-           assertEquals(t_RightNode, t_aNodes[6]);
+           testEdge(t_aEdges[t_iIndex], t_aNodes[5], t_aNodes[6], false);
+           testArg(t_aEdges[t_iIndex], "label", "-1");
+           testArg(t_aEdges[t_iIndex], "layer", "error");
+           testArg(t_aEdges[t_iIndex], "color", "gray85");
+           testArg(t_aEdges[t_iIndex++], "fontcolor", "gray85");
 
-           assertNotNull(t_aEdges[t_iIndex]);
-           t_LeftNode = t_aEdges[t_iIndex].getLeftNode();
-           assertNotNull(t_LeftNode);
-           assertEquals(t_LeftNode, t_aNodes[6]);
-           t_RightNode = t_aEdges[t_iIndex++].getRightNode();
-           assertNotNull(t_RightNode);
-           assertEquals(t_RightNode, t_aNodes[7]);
+           testEdge(t_aEdges[t_iIndex], t_aNodes[6], t_aNodes[7], false);
+           testArg(t_aEdges[t_iIndex], "label", "0");
+           testArg(t_aEdges[t_iIndex], "layer", "error");
+           testArg(t_aEdges[t_iIndex], "color", "gray85");
+           testArg(t_aEdges[t_iIndex++], "fontcolor", "gray85");
         }
         catch  (final Throwable throwable)
         {
@@ -274,5 +247,73 @@ public class GraphManagerTest
 
             fail("" + throwable);
         }
+    }
+
+    /**
+     * Tests <code>GraphManager.getGraph()</code> method, with the
+     * input defined in <code>DotParserTest.TEST_INPUT_2</code>.
+     * @see org.acmsl.dotparser.GraphManager#getGraph()
+     * @see org.acmsl.dotparser.antlr.DotParserTest#TEST_INPUT_2
+     */
+    public void testParse2()
+    {
+    }
+
+    /**
+     * Tests given node.
+     * @param node the node.
+     * @param name the name.
+     * @precondition name != null
+     */
+    protected void testNode(final Node node, final String name)
+    {
+        assertNotNull(node);
+        assertEquals(name, node.getName());
+    }
+
+    /**
+     * Tests given argument.
+     * @param container the argument container.
+     * @param name the argument's name.
+     * @param value the argument's value.
+     */
+    protected void testArg(
+        final ArgumentContainer container,
+        final String name,
+        final String value)
+    {
+        assertNotNull(container);
+        List t_lArgNames = container.getArgNames();
+        assertNotNull(t_lArgNames);
+        assertTrue(t_lArgNames.contains(name));
+        Map t_mArgValues = container.getArgValues();
+        assertNotNull(t_mArgValues);
+        assertTrue(t_mArgValues.containsKey(name));
+        Object t_Value = t_mArgValues.get(name);
+        assertNotNull(t_Value);
+        assertEquals(value, t_Value);
+    }
+
+    /**
+     * Tests given edge.
+     * @param edge the edge.
+     * @param leftNode the left node.
+     * @param rightNode the node on the right.
+     * @param directed whether the edge is directed or not.
+     */
+    protected void testEdge(
+        final Edge edge,
+        final Node leftNode,
+        final Node rightNode,
+        final boolean directed)
+    {
+        assertNotNull(edge);
+        Node t_LeftNode = edge.getLeftNode();
+        assertNotNull(t_LeftNode);
+        assertEquals(leftNode, t_LeftNode);
+        Node t_RightNode = edge.getRightNode();
+        assertNotNull(t_RightNode);
+        assertEquals(rightNode, t_RightNode);
+        assertEquals(directed, edge.getDirected());
     }
 }

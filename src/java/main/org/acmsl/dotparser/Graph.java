@@ -42,6 +42,7 @@ package org.acmsl.dotparser;
 /*
  * Importing some project-specific classes.
  */
+import org.acmsl.dotparser.AbstractArgumentContainer;
 import org.acmsl.dotparser.antlr.DotLexer;
 import org.acmsl.dotparser.antlr.DotParser;
 
@@ -79,6 +80,7 @@ import org.apache.commons.logging.LogFactory;
  *         >Jose San Leandro</a>
  */
 public class Graph
+    extends  AbstractArgumentContainer
 {
     /**
      * The name.
