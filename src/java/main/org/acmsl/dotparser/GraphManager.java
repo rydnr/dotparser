@@ -97,6 +97,11 @@ public class GraphManager
     public static final int EDGE = 3;
 
     /**
+     * Identifies subgraphs.
+     */
+    public static final int SUBGRAPH = 4;
+
+    /**
      * The Dot document.
      */
     private InputStream m__DotInputStream;
@@ -213,6 +218,7 @@ public class GraphManager
             String t_strCurrentNodeName = null;
             Node t_CurrentNode = null;
             Edge t_CurrentEdge = null;
+            Subgraph t_CurrentSubgraph = null;
             Node t_LeftNode = null;
             Node t_RightNode = null;
             
@@ -251,6 +257,13 @@ public class GraphManager
                                 retrieveEdgeDirected(t_AST));
                         addArguments(t_AST, t_CurrentEdge);
                         result.add(t_CurrentEdge);
+                        break;
+
+                    case  SUBGRAPH:
+                        t_CurrentSubgraph =
+                            new Subgraph(retrieveSubgraphName(t_AST));
+                        addArguments(t_AST, t_CurrentSubgraph);
+                        result.add(t_CurrentSubgraph);
                         break;
 
                     default:
@@ -327,6 +340,26 @@ public class GraphManager
     }
 
     /**
+     * Retrieves the name of the subgraph AST, that is, its first child.
+     * @param ast the tree.
+     * @return the node.
+     * @precondition ast != null
+     */
+    protected String retrieveSubgraphName(final AST ast)
+    {
+        String result = null;
+
+        AST t_CurrentAST = ast.getFirstChild();
+
+        if  (t_CurrentAST != null)
+        {
+            result = t_CurrentAST.getText();
+        }
+
+        return result;
+    }
+
+    /**
      * Retrieves whether the graph is directed or not.
      * @param ast the tree.
      * @return the type of graph.
@@ -373,7 +406,14 @@ public class GraphManager
                     }
                     else
                     {
-                        result = GRAPH_ARGUMENT;
+                        if  ("subgraph".equalsIgnoreCase(ast.getText()))
+                        {
+                            result = SUBGRAPH;
+                        }
+                        else
+                        {
+                            result = GRAPH_ARGUMENT;
+                        }
                     }
                 }
             }
@@ -435,6 +475,55 @@ public class GraphManager
         while  (t_CurrentAST != null)
         {
             container.add(t_CurrentAST.getText(), retrieveName(t_CurrentAST));
+
+            t_CurrentAST = t_CurrentAST.getNextSibling();
+        }
+    }
+
+    /**
+     * Fills given subgraph with remaining information from the AST.
+     * @param ast the abstract syntax tree.
+     * @param subgraph the subgraph.
+     * @precondition ast != null
+     * @precondtion subgraph != null
+     */
+    protected void addArguments(
+        final AST ast, final Subgraph subgraph)
+    {
+        AST t_CurrentAST = ast.getFirstChild();
+        AST t_ChildAST = null;
+        AST t_GrandChildAST = null;
+
+        String t_strCurrentNodeName = null;
+        Node t_CurrentNode = null;
+
+        while  (t_CurrentAST != null)
+        {
+            t_ChildAST = t_CurrentAST.getFirstChild();
+
+            if  (t_ChildAST != null)
+            {
+                t_GrandChildAST = t_ChildAST.getFirstChild();
+
+                if  (t_GrandChildAST != null)
+                {
+                    t_strCurrentNodeName = t_CurrentAST.getText();
+
+                    if  (   (!"node".equalsIgnoreCase(t_strCurrentNodeName))
+                         && (!"edge".equalsIgnoreCase(t_strCurrentNodeName)))
+                    {
+                        t_CurrentNode = 
+                            new Node(t_strCurrentNodeName);
+                        addArguments(t_CurrentAST, t_CurrentNode);
+                        subgraph.add(t_CurrentNode);
+                    }
+                }
+                else
+                {
+                    subgraph.add(
+                        t_CurrentAST.getText(), t_ChildAST.getText());
+                }
+            }
 
             t_CurrentAST = t_CurrentAST.getNextSibling();
         }

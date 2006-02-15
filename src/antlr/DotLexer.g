@@ -61,6 +61,7 @@ LITERALS
         | ("strict") => STRICT_LITERAL {$setType(STRICT_LITERAL);}
         | ("node") => NODE_LITERAL {$setType(NODE_LITERAL);}
         | ("edge") => EDGE_LITERAL {$setType(EDGE_LITERAL);}
+        | ("subgraph") => SUBGRAPH_LITERAL {$setType(SUBGRAPH_LITERAL);}
         | ("--") => EDGEOP_LITERAL {$setType(EDGEOP_LITERAL);}
         | ("->") => EDGEOP_LITERAL {$setType(EDGEOP_LITERAL);}
         | ("{") => O_BRACKET {$setType(O_BRACKET);}
@@ -79,6 +80,7 @@ protected DIGRAPH_LITERAL : "digraph";
 protected STRICT_LITERAL : "strict";
 protected NODE_LITERAL : "node";
 protected EDGE_LITERAL : "edge";
+protected SUBGRAPH_LITERAL : "subgraph";
 
 protected O_BRACKET : '{';
 protected C_BRACKET : '}';

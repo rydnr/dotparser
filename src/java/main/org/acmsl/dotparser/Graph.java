@@ -42,35 +42,15 @@ package org.acmsl.dotparser;
 /*
  * Importing some project-specific classes.
  */
-import org.acmsl.dotparser.AbstractArgumentContainer;
-import org.acmsl.dotparser.antlr.DotLexer;
-import org.acmsl.dotparser.antlr.DotParser;
-
-/*
- * Importing ANTLR classes.
- */
-import antlr.collections.AST;
-import antlr.RecognitionException;
-import antlr.TokenBuffer;
-import antlr.TokenStream;
-import antlr.TokenStreamException;
+import org.acmsl.dotparser.AbstractGraph;
 
 /*
  * Importing some JDK classes.
  */
-import java.io.File;
-import java.io.InputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-
-/*
- * Importing Commons-Logging classes.
- */
-import org.apache.commons.logging.LogFactory;
 
 /**
  * Models 
@@ -80,27 +60,22 @@ import org.apache.commons.logging.LogFactory;
  *         >Jose San Leandro</a>
  */
 public class Graph
-    extends  AbstractArgumentContainer
+    extends  AbstractGraph
 {
-    /**
-     * The name.
-     */
-    private String m__strName;
-
     /**
      * Whether the graph is directed or not.
      */
     private boolean m__bDirected;
 
     /**
-     * The nodes.
-     */
-    private List m__lNodes;
-
-    /**
      * The edges.
      */
     private List m__lEdges;
+
+    /**
+     * The subgraphs.
+     */
+    private List m__lSubgraphs;
 
     /**
      * Creates a <code>Graph</code> instance.
@@ -110,37 +85,10 @@ public class Graph
      */
     public Graph(final String name, final boolean directed)
     {
-        immutableSetName(name);
+        super(name);
         immutableSetDirected(directed);
-        immutableSetNodes(new ArrayList());
         immutableSetEdges(new ArrayList());
-    }
-
-    /**
-     * Specifies the graph name.
-     * @param name the name.
-     */
-    protected final void immutableSetName(final String name)
-    {
-        m__strName = name;
-    }
-
-    /**
-     * Specifies the graph name.
-     * @param name the name.
-     */
-    protected void setName(final String name)
-    {
-        immutableSetName(name);
-    }
-
-    /**
-     * Retrieves the graph name.
-     * @return the name.
-     */
-    public String getName()
-    {
-        return m__strName;
+        immutableSetSubgraphs(new ArrayList());
     }
 
     /**
@@ -168,42 +116,6 @@ public class Graph
     public boolean getDirected()
     {
         return m__bDirected;
-    }
-
-    /**
-     * Specifies the nodes.
-     * @param nodes the nodes.
-     */
-    protected final void immutableSetNodes(final List nodes)
-    {
-        m__lNodes = nodes;
-    }
-
-    /**
-     * Specifies the nodes.
-     * @param nodes the nodes.
-     */
-    protected void setNodes(final List nodes)
-    {
-        immutableSetNodes(nodes);
-    }
-
-    /**
-     * Retrieves the nodes.
-     * @return such list.
-     */
-    protected final List immutableGetNodes()
-    {
-        return m__lNodes;
-    }
-
-    /**
-     * Retrieves the nodes.
-     * @return such list.
-     */
-    public List getNodes()
-    {
-        return Collections.unmodifiableList(immutableGetNodes());
     }
 
     /**
@@ -243,24 +155,30 @@ public class Graph
     }
 
     /**
-     * Adds a new node.
-     * @param node the node.
-     * @precondition node != null
+     * Specifies the subgraphs.
+     * @param subgraphs such collection.
      */
-    void add(final Node node)
+    protected final void immutableSetSubgraphs(final List subgraphs)
     {
-        add(node, immutableGetNodes());
+        m__lSubgraphs = subgraphs;
     }
 
     /**
-     * Adds a new node.
-     * @param node the node.
-     * @precondition node != null
-     * @precondition nodes != null
+     * Specifies the subgraphs.
+     * @param subgraphs such collection.
      */
-    protected void add(final Node node, final Collection nodes)
+    protected void setSubgraphs(final List subgraphs)
     {
-        nodes.add(node);
+        immutableSetSubgraphs(subgraphs);
+    }
+
+    /**
+     * Retrieves the subgraphs.
+     * @return such collection.
+     */
+    public Collection getSubgraphs()
+    {
+        return m__lSubgraphs;
     }
 
     /**
@@ -283,5 +201,27 @@ public class Graph
     protected void add(final Edge edge, final Collection edges)
     {
         edges.add(edge);
+    }
+
+    /**
+     * Adds a new subgraph.
+     * @param subgraph the subgraph to add.
+     * @precondition subgraph != null
+     */
+    void add(final Subgraph subgraph)
+    {
+        add(subgraph, getSubgraphs());
+    }
+
+    /**
+     * Adds a new subgraph.
+     * @param subgraph the subgraph to add.
+     * @param subgraphs the subgraph collection.
+     * @precondition subgraph != null
+     * @precondition subgraphs != null
+     */
+    protected void add(final Subgraph subgraph, final Collection subgraphs)
+    {
+        subgraphs.add(subgraph);
     }
 }

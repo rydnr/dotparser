@@ -60,17 +60,17 @@ graph
     ;
 
 protected stmt_list
-    :  ( stmt SEMI_COLON! stmt_list)?
+    :  (stmt stmt_list)?
     ;
 
 protected stmt
     {String currentId = null;}
-    :  (  i:ID^ {currentId = i.getText();}
+    :    subgraph
+       |  i:ID^ {currentId = i.getText();}
           (  EQUAL! ID
            | node_or_edge_stmt[currentId])
-        | attr_stmt
-        | subgraph
-       )
+          SEMI_COLON!
+       | attr_stmt
     ;
 
 protected node_or_edge_stmt[String id]
@@ -89,7 +89,7 @@ protected node_stmt[String id, String port]
     ;
 
 protected attr_stmt
-    :  (GRAPH_LITERAL^ | NODE_LITERAL^ | EDGE_LITERAL^) (attr_list)
+    :  (GRAPH_LITERAL^ | NODE_LITERAL^ | EDGE_LITERAL^) (attr_list) SEMI_COLON!
     ;
 
 protected attr_list
@@ -129,17 +129,6 @@ protected port returns [String result = null]
     ;
 
 protected subgraph
-    :  (SUBGRAPH_LITERAL^
-           (  (ID) =>
-                (  (O_BRACKET) => subgraph_ext
-                | subgraph_simple)
-            | subgraph_ext))
-    ;
-
-protected subgraph_ext
-    :  (SUBGRAPH_LITERAL^ (ID)? )? O_BRACKET! stmt_list C_BRACKET!
-    ;
-
-protected subgraph_simple
-    :  SUBGRAPH_LITERAL ID^
+    :  SUBGRAPH_LITERAL^
+       ID (O_BRACKET! stmt_list C_BRACKET!)?
     ;
