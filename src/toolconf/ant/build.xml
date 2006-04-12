@@ -2549,13 +2549,14 @@
     <!--
      Builds the project from scratch.
      @depends clean to clean up previously compiled classes.
+     @depends antlr.execute to generate the grammar parser.
      @depends compile to generate the .class files.
      @depends jar to create the resulting jar file.
      @return the complete build process.
     -->
     <target
         name="rebuild"
-        depends="clean, compile, jar"
+        depends="clean, antlr.execute, compile, jar"
         description="Builds the project from scratch."/>
 
     <!--
